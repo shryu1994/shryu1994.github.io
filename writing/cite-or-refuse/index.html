@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>i shipped a RAG that refuses to answer — then caught it breaking its own rule</title>
+<meta name="description" content="A devlog on cite-or-refuse: making refusal a first-class eval, and the adversarial review that caught the system breaking its own one rule — twice." />
+<meta property="og:title" content="i shipped a RAG that refuses to answer — then caught it breaking its own rule" />
+<meta property="og:description" content="Making refusal a first-class eval — and the adversarial review that caught the system confidently hallucinating on its own demo." />
+<meta property="og:type" content="article" />
+<link rel="canonical" href="https://sh-ryu.com/writing/cite-or-refuse/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../provenance.css" />
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent); border-bottom: 1px solid var(--line); }
+  .nav__in { max-width: 720px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; letter-spacing: 0.02em;
+    text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; gap: 0.45em; }
+  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
+  .nav__back { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--ink-muted); text-decoration: none; }
+  .nav__back:hover { color: var(--pine); }
+
+  .article { max-width: 680px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) 1.5rem 2rem; }
+  .article__meta { margin-bottom: 1.6rem; }
+  .article__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0.9rem 0 0; }
+
+  .prose { font-size: 1.08rem; line-height: 1.72; color: var(--ink); max-width: 65ch; }
+  .prose p { margin: 1.35rem 0; }
+  .prose em { font-style: italic; color: var(--pine); }
+  .prose strong { font-weight: 600; }
+  .prose h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em;
+    line-height: 1.2; margin: 2.8rem 0 0.2rem; }
+  .prose ul, .prose ol { margin: 1.35rem 0; padding-left: 1.3rem; }
+  .prose li { margin: 0.55rem 0; padding-left: 0.2rem; }
+  .prose li::marker { color: var(--ink-faint); }
+  .prose code { font-family: var(--font-mono); font-size: 0.82em; background: var(--paper-sunken);
+    border: 1px solid var(--line); border-radius: 5px; padding: 0.08em 0.4em; }
+  .prose .q { font-family: var(--font-display); font-style: italic; font-size: 1.25rem; color: var(--pine);
+    display: block; margin: 1.6rem 0; padding-left: 1.1rem; border-left: 2px solid var(--pine); }
+  .prose .kicker { font-weight: 600; }
+
+  .endcap { margin: 2.6rem 0 0; padding: 1.4rem 1.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius); background: var(--paper-raised); }
+  .endcap p { margin: 0 0 0.9rem; font-size: 0.98rem; color: var(--ink-muted); }
+  .article__foot { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .article__foot .pv-label { margin: 0; }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+      <a class="nav__back" href="/#proof">← back</a>
+    </div>
+  </nav>
+
+  <article class="article">
+    <header class="article__meta">
+      <p class="pv-label">Devlog · 2026 · <span class="pv-cite">cite-or-refuse</span></p>
+      <h1 class="article__title">i shipped a RAG that refuses to answer — then caught it breaking its own rule</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        the most common way a RAG system fails in production isn't a wrong answer. it's a
+        <em>confident hallucination</em> — a fluent, well-formatted reply to a question the
+        documents don't actually answer. it looks right. it cites something. it's just made up.
+      </p>
+      <p>
+        so i built a small open-source thing called <strong>cite-or-refuse</strong>. one rule:
+        cite a real source, or honestly say <code>not in the docs</code>. never guess. and — the
+        part i actually care about — i made <em>refusing</em> a first-class eval. honestly saying
+        "i don't know" scores as a PASS, not a gap.
+      </p>
+      <p>
+        every reply is forced into one of three shapes, which is what makes faithfulness
+        <em>checkable</em> instead of vibes:
+      </p>
+      <ul>
+        <li><code>answer</code> — a retrieved sentence actually addresses the question, with a citation.</li>
+        <li><code>not_in_sources</code> — the docs don't support an answer. so it says so.</li>
+        <li><code>out_of_scope</code> — the question isn't this assistant's job.</li>
+      </ul>
+      <p>
+        it runs fully offline. no API key, no network. synthetic data only — the corpus is a
+        fictional product, because the <em>method</em> is the point, not the data.
+      </p>
+
+      <h2>the part i didn't plan for</h2>
+      <p>
+        before publishing, i ran an adversarial review on it. not on the corpus — on the
+        <em>system</em>. i wanted to know where it lied.
+      </p>
+      <p>
+        it caught my own system confidently answering a question it had no source for. the exact
+        failure the whole project exists to prevent.
+      </p>
+      <p class="q">"can i password-protect a share link?"</p>
+      <p>
+        the docs talk about share links. they never once mention passwords. a faithful system
+        should refuse. mine cheerfully cited the generic share-link sentence — because the
+        question and the sentence share the words "share" and "link," and that was enough to score
+        them as relevant.
+      </p>
+      <p>
+        so the thing built to stop confident hallucination was confidently hallucinating. on its
+        own demo. that's the honest version of the story, and it's a better story than "i built a
+        thing and it worked."
+      </p>
+
+      <h2>the fix wasn't the first fix</h2>
+      <p>
+        first pass, i patched it. felt fine. so i ran the review <em>again</em> — a second round,
+        fresh eyes — and it caught that my fix was a patch, not a fix. it still hallucinated on
+        undocumented <em>sub-features</em>, and my README was quietly overclaiming what the system
+        could do.
+      </p>
+      <p>that second round is the whole reason i trust the project at all.</p>
+      <p>
+        root cause, once i actually found it: the relevance score gave <em>zero</em> weight to the
+        one word that made the question unanswerable — "password." retrieval rewarded the words
+        that matched and never penalized the word that didn't exist anywhere in the docs.
+      </p>
+      <p>the real fix is two cheap gates working together:</p>
+      <ol>
+        <li>an <strong>undocumented-term gate</strong> — if a question names something that appears
+          nowhere in the corpus, refuse. don't let matched words drown out the unmatched one.</li>
+        <li>light <strong>morphological normalization</strong> so the gate doesn't get fooled by
+          plurals and word forms.</li>
+      </ol>
+      <p>
+        verified: 0 hallucinations across 14 adversarial probes, 0 over-refusals across 4 cases
+        that <em>should</em> answer. the eval is 11/11 — and those 11 deliberately mix all three
+        kinds, including the exact paraphrases the review caught it failing, pinned so they can't
+        regress. 20 offline tests around it.
+      </p>
+
+      <h2>why i'm writing this down</h2>
+      <p>
+        i build grounded RAG for the kind of regulated documents nobody wants to read. in that
+        world, a confident wrong answer isn't an embarrassment — it's the failure mode that
+        actually hurts someone. "i don't know" is a feature, and it has to be measurable.
+      </p>
+      <p>
+        the demo is small on purpose. the thing i wanted to show isn't a clever retriever. it's a
+        way of working: make refusal a measurable requirement, then adversarially try to make your
+        own system break its one rule — twice — before you let anyone else see it.
+      </p>
+      <p><span class="kicker">it caught me. that's the point.</span></p>
+
+      <div class="endcap">
+        <p>code, the eval, and the whole writeup (including the saga above):</p>
+        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/cite-or-refuse">github.com/shryu1994/cite-or-refuse →</a>
+      </div>
+    </div>
+  </article>
+
+  <div class="article__foot">
+    <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+    <p class="pv-label">cite a real source, or refuse</p>
+  </div>
+
+</body>
+</html>
