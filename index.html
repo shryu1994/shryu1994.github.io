@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Seunghyun Ryu — AI for regulated work</title>
+<meta name="description" content="Cloud engineer building grounded RAG for regulated documentation. Cite a real source or honestly refuse. Proof is public and IP-clean — deep & reliable over fast." />
+<meta property="og:title" content="Seunghyun Ryu — AI for regulated work" />
+<meta property="og:description" content="I make the paperwork nobody wants to touch answer itself — with AI. Deep & reliable over fast." />
+<meta property="og:type" content="website" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="provenance.css" />
+<style>
+  /* page-specific composition only — system lives in provenance.css */
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent);
+    border-bottom: 1px solid var(--line); }
+  .nav__in { max-width: 860px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem;
+    letter-spacing: 0.02em; text-decoration: none; color: var(--ink);
+    display: inline-flex; align-items: center; gap: 0.45em; }
+  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
+  .nav__links { display: flex; gap: 1.25rem; font-family: var(--font-mono);
+    font-size: 0.75rem; letter-spacing: 0.04em; }
+  .nav__links a { color: var(--ink-muted); text-decoration: none; transition: color 0.2s; }
+  .nav__links a:hover { color: var(--pine); }
+  @media (max-width: 560px) { .nav__links { display: none; } }
+
+  .hero { position: relative; overflow: hidden; padding: clamp(4rem, 11vw, 8rem) 0 clamp(3rem, 6vw, 4.5rem); }
+  .hero .pv-shell { position: relative; }
+  .hero__eyebrow { margin-bottom: 1.6rem; }
+  .hero__lede { margin-top: 1.9rem; }
+  .hero__cta { margin-top: 2.4rem; display: flex; flex-wrap: wrap; gap: 0.7rem; }
+
+  section { padding: var(--space-section) 0; }
+  .sec-head { margin-bottom: 2.2rem; }
+  .sec-head .pv-h2 { margin-top: 0.9rem; }
+
+  .proof-grid { display: grid; gap: 1.1rem; grid-template-columns: 1fr 1fr; }
+  @media (max-width: 640px) { .proof-grid { grid-template-columns: 1fr; } }
+  .pv-card__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+  .pv-card__repo { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em;
+    color: var(--pine); text-decoration: none; }
+  .pv-card__repo:hover { text-decoration: underline; }
+  .pv-card__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.1rem; }
+
+  /* inverted "regulated" band */
+  .band { background: var(--panel); color: var(--panel-ink); border-radius: 0; }
+  .band .pv-label { color: color-mix(in srgb, var(--panel-ink) 60%, transparent); }
+  .band .pv-h2 { color: var(--panel-ink); }
+  .principles { display: grid; gap: 1.4rem; grid-template-columns: repeat(3, 1fr); margin-top: 2.4rem; }
+  @media (max-width: 720px) { .principles { grid-template-columns: 1fr; } }
+  .principle { border-top: 1px solid color-mix(in srgb, var(--panel-ink) 22%, transparent); padding-top: 1rem; }
+  .principle__n { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ochre); letter-spacing: 0.1em; }
+  .principle h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.2rem;
+    margin: 0.5rem 0 0.5rem; color: var(--panel-ink); }
+  .principle p { margin: 0; font-size: 0.9rem; line-height: 1.6;
+    color: color-mix(in srgb, var(--panel-ink) 72%, transparent); }
+
+  .xp { border-top: 1px solid var(--line); }
+  .xp__row { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
+    padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
+  .xp__role { font-size: 1.02rem; }
+  .xp__role b { font-weight: 600; }
+  .xp__role span { color: var(--ink-muted); }
+  .xp__when { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); white-space: nowrap; }
+  @media (max-width: 520px) { .xp__row { flex-direction: column; gap: 0.15rem; } }
+
+  .kit { display: grid; gap: 0.55rem 2rem; grid-template-columns: 1fr 1fr;
+    font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-muted); line-height: 1.9; }
+  @media (max-width: 520px) { .kit { grid-template-columns: 1fr; } }
+  .kit b { color: var(--ink); font-weight: 500; }
+
+  footer { padding: 3rem 0 4rem; border-top: 1px solid var(--line); }
+  .foot { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; }
+  .foot__links { display: flex; gap: 0.7rem; }
+  .foot__note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-faint); }
+
+  /* stagger */
+  .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.15s; }
+  .d3 { animation-delay: 0.25s; } .d4 { animation-delay: 0.35s; }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+      <div class="nav__links">
+        <a href="#proof">Proof</a>
+        <a href="#work">Approach</a>
+        <a href="#experience">Experience</a>
+        <a href="https://github.com/shryu1994">GitHub ↗</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="pv-shell">
+      <div class="pv-grid" aria-hidden="true"></div>
+      <p class="pv-label hero__eyebrow pv-rise d1">Seunghyun Ryu · 류승현</p>
+      <h1 class="pv-display pv-rise d2">
+        I make the paperwork<br />nobody wants to touch<br /><em>answer itself</em> — with AI.
+      </h1>
+      <p class="pv-lede hero__lede pv-rise d3">
+        Cloud engineer building grounded RAG for regulated documentation — the
+        high-stakes, slow-to-read work that bottlenecks on people. Every answer
+        cites a real source <span class="pv-cite">[H1]</span> or honestly refuses.
+        Proof is public and IP-clean. Deep &amp; reliable over fast.
+      </p>
+      <div class="hero__cta pv-rise d4">
+        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/cite-or-refuse">View cite-or-refuse →</a>
+        <a class="pv-btn" href="https://linkedin.com/in/shryu1994">LinkedIn</a>
+        <a class="pv-btn" href="https://x.com/shryu1994">X</a>
+      </div>
+    </div>
+  </header>
+
+  <section id="proof">
+    <div class="pv-shell">
+      <div class="sec-head">
+        <p class="pv-label">Public proof</p>
+        <h2 class="pv-h2">Shipped, in the open, on synthetic data.</h2>
+      </div>
+      <div class="proof-grid">
+
+        <article class="pv-card">
+          <div class="pv-card__head">
+            <span class="pv-cite">cite · refuse</span>
+            <a class="pv-card__repo" href="https://github.com/shryu1994/cite-or-refuse">github ↗</a>
+          </div>
+          <h3 class="pv-card__title">cite-or-refuse</h3>
+          <p>
+            A documentation Q&amp;A system with one rule: cite a real source, or honestly
+            refuse — and refusal scores as a first-class eval. Before publishing, an
+            adversarial review caught it confidently answering questions it had no source
+            for; I found the root cause and fixed it. 11/11 eval, 20 offline tests, no API key.
+          </p>
+          <div class="pv-card__tags">
+            <span class="pv-tag">grounded RAG</span>
+            <span class="pv-tag">refusal-as-eval</span>
+            <span class="pv-tag">LLM-as-Judge</span>
+          </div>
+        </article>
+
+        <article class="pv-card">
+          <div class="pv-card__head">
+            <span class="pv-cite">local · 0 deps</span>
+            <a class="pv-card__repo" href="https://github.com/shryu1994/promptprint">github ↗</a>
+          </div>
+          <h3 class="pv-card__title">promptprint</h3>
+          <p>
+            A Claude Code companion that turns your own question log into a picture of how
+            your expertise is growing — what you ask, how it deepens over time. Runs 100%
+            local with zero dependencies; nothing leaves your machine.
+          </p>
+          <div class="pv-card__tags">
+            <span class="pv-tag">developer tool</span>
+            <span class="pv-tag">local-first</span>
+            <span class="pv-tag">Claude Code</span>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="band" id="work">
+    <div class="pv-shell">
+      <div class="sec-head">
+        <p class="pv-label">How I work</p>
+        <h2 class="pv-h2">Refusing to guess is a feature, not a gap.</h2>
+      </div>
+      <div class="principles">
+        <div class="principle">
+          <span class="principle__n">01</span>
+          <h3>Evidence first</h3>
+          <p>Claims are made only from retrieved, cited sources — never from the words a
+             question happens to share. Absence of evidence is reported, not papered over.</p>
+        </div>
+        <div class="principle">
+          <span class="principle__n">02</span>
+          <h3>Human approval gate</h3>
+          <p>Anything irreversible — sending, modifying infra, exposing data — waits for a
+             person to review and approve. The system drafts; the human decides.</p>
+        </div>
+        <div class="principle">
+          <span class="principle__n">03</span>
+          <h3>Clear data boundaries</h3>
+          <p>Proof lives on public, synthetic data. Company systems and customer data stay
+             private. The method is the point — so the evidence stays reproducible.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="experience">
+    <div class="pv-shell">
+      <div class="sec-head">
+        <p class="pv-label">Experience</p>
+        <h2 class="pv-h2">Eight years close to production.</h2>
+      </div>
+      <div class="xp">
+        <div class="xp__row">
+          <span class="xp__role"><b>Cloud Engineer</b> <span>· Rokit Healthcare</span></span>
+          <span class="xp__when">2025 — present</span>
+        </div>
+        <div class="xp__row">
+          <span class="xp__role"><b>Site Reliability Engineer</b> <span>· IT Senclouit</span></span>
+          <span class="xp__when">2023 — 2025</span>
+        </div>
+        <div class="xp__row">
+          <span class="xp__role"><b>Site Reliability Engineer</b> <span>· Clouit</span></span>
+          <span class="xp__when">2022 — 2023</span>
+        </div>
+        <div class="xp__row">
+          <span class="xp__role"><b>Site Reliability Engineer</b> <span>· Ssangyong Information</span></span>
+          <span class="xp__when">2022</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="toolbox" style="padding-top: 0;">
+    <div class="pv-shell">
+      <div class="sec-head">
+        <p class="pv-label">Toolbox</p>
+        <h2 class="pv-h2">What I reach for.</h2>
+      </div>
+      <div class="kit">
+        <div><b>AI</b> &nbsp; grounded RAG · evals &amp; LLM-as-Judge · MCP / agents</div>
+        <div><b>Platform</b> &nbsp; Kubernetes · GCP · CI/CD · reliability</div>
+        <div><b>Build</b> &nbsp; Python · TypeScript · infra-as-code</div>
+        <div><b>Certs</b> &nbsp; CKAD · CKA · Naver Cloud Platform</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="pv-shell foot">
+      <div class="foot__links">
+        <a class="pv-btn" href="https://github.com/shryu1994">GitHub</a>
+        <a class="pv-btn" href="https://x.com/shryu1994">X</a>
+        <a class="pv-btn" href="https://linkedin.com/in/shryu1994">LinkedIn</a>
+      </div>
+      <p class="foot__note">© Seunghyun Ryu — cite a real source, or refuse.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
