@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the FDA and Anthropic wrote down the same rule my RAG runs on — and my own review caught it breaking that rule, twice</title>
+<meta name="description" content="Anthropic's eval blog, an OpenAI paper, and the FDA's first AI warning letter independently wrote down the same rule: a system that doesn't know should say so, and you have to check that it does. cite-or-refuse runs on that rule — and my own adversarial review still caught it breaking the rule, twice." />
+<meta property="og:title" content="the FDA and Anthropic wrote down the same rule my RAG runs on — and my own review caught it breaking that rule, twice" />
+<meta property="og:description" content="A regulator, a frontier lab, and a frontier paper converged on the same rule. cite-or-refuse runs on it — and my own adversarial review still caught the system breaking that rule, twice." />
+<meta property="og:type" content="article" />
+<link rel="canonical" href="https://sh-ryu.com/writing/fda-anthropic-same-rule/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../provenance.css" />
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent); border-bottom: 1px solid var(--line); }
+  .nav__in { max-width: 720px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; letter-spacing: 0.02em;
+    text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; gap: 0.45em; }
+  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
+  .nav__back { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--ink-muted); text-decoration: none; }
+  .nav__back:hover { color: var(--pine); }
+
+  .article { max-width: 680px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) 1.5rem 2rem; }
+  .article__meta { margin-bottom: 1.6rem; }
+  .article__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0.9rem 0 0; }
+
+  .prose { font-size: 1.08rem; line-height: 1.72; color: var(--ink); max-width: 65ch; }
+  .prose p { margin: 1.35rem 0; }
+  .prose em { font-style: italic; color: var(--pine); }
+  .prose strong { font-weight: 600; }
+  .prose a { color: var(--pine); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--pine) 40%, transparent); }
+  .prose a:hover { text-decoration-color: var(--pine); }
+  .prose h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em;
+    line-height: 1.2; margin: 2.8rem 0 0.2rem; }
+  .prose ul, .prose ol { margin: 1.35rem 0; padding-left: 1.3rem; }
+  .prose li { margin: 0.55rem 0; padding-left: 0.2rem; }
+  .prose li::marker { color: var(--ink-faint); }
+  .prose code { font-family: var(--font-mono); font-size: 0.82em; background: var(--paper-sunken);
+    border: 1px solid var(--line); border-radius: 5px; padding: 0.08em 0.4em; }
+  .prose blockquote { margin: 1.5rem 0; padding: 0.2rem 0 0.2rem 1.2rem; border-left: 2px solid var(--pine);
+    font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--pine); line-height: 1.5; }
+  .prose blockquote p { margin: 0.6rem 0; }
+  .prose .q { font-family: var(--font-display); font-style: italic; font-size: 1.25rem; color: var(--pine);
+    display: block; margin: 1.6rem 0; padding-left: 1.1rem; border-left: 2px solid var(--pine); }
+  .prose .kicker { font-weight: 600; }
+
+  .endcap { margin: 2.6rem 0 0; padding: 1.4rem 1.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius); background: var(--paper-raised); }
+  .endcap p { margin: 0 0 0.9rem; font-size: 0.98rem; color: var(--ink-muted); }
+  .article__foot { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .article__foot .pv-label { margin: 0; }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+      <a class="nav__back" href="/#proof">← back</a>
+    </div>
+  </nav>
+
+  <article class="article">
+    <header class="article__meta">
+      <p class="pv-label">Devlog · 2026 · <span class="pv-cite">cite-or-refuse</span></p>
+      <h1 class="article__title">the FDA and Anthropic wrote down the same rule my RAG runs on — and my own review caught it breaking that rule, twice</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        within about a year, three groups that don't talk to each other wrote down the same rule.
+        a frontier lab put it in an engineering blog. a frontier paper put it in the abstract. and a
+        drug regulator put it in its first-ever warning letter about AI.
+      </p>
+      <p>
+        the rule: <strong>a system that doesn't know should be able to say so — and you have to
+        check that it actually does.</strong>
+      </p>
+      <p>
+        i built a small open-source thing on exactly that rule. then, running an adversarial review
+        before publishing, i caught my own system breaking it. twice. this is that story, with the
+        receipts — because a post about citation discipline that doesn't cite its own sources would
+        be its own punchline.
+      </p>
+
+      <h2>the three who wrote it down</h2>
+      <p>
+        <strong>Anthropic's engineering team</strong>, in
+        <a href="https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents">Demystifying evals for AI agents</a>,
+        says it almost as an instruction:
+      </p>
+      <blockquote><p>"give the LLM a way out, like providing an instruction to return 'Unknown' when it doesn't have enough information."</p></blockquote>
+      <p>and then the part most people skip — the <em>test</em>, not just the behavior:</p>
+      <blockquote><p>"Test both the cases where a behavior <em>should</em> occur and where it <em>shouldn't</em>. One-sided evals create one-sided optimization."</p></blockquote>
+      <p>
+        so: give it an out, <em>and</em> measure that it takes the out when it should. that second
+        sentence is the whole game.
+      </p>
+      <p>
+        <strong>OpenAI's</strong> paper
+        <a href="https://arxiv.org/abs/2509.04664">Why Language Models Hallucinate</a>
+        explains why the out is so hard to get: standard evals reward confident guessing and score
+        "i don't know" the same as a wrong answer. a model that abstains looks worse on the
+        leaderboard than a model that bluffs. the proposed fix is to <em>credit calibrated
+        abstention</em> — make "i don't know" able to score points.
+      </p>
+      <p>
+        and then the one that isn't a blog or a paper. the <strong>FDA's first warning letter to
+        cite overreliance on AI</strong> — WL 320-26-58, issued to a contract drug manufacturer on
+        April 2, 2026. read it closely and the striking thing is what it <em>doesn't</em> say. it
+        doesn't say the AI was wrong. it says the company used AI to draft regulated documents and
+        then had no one accountable for verifying the output was correct. the cited violation is
+        <a href="https://www.fda.gov/inspections-compliance-enforcement-and-criminal-investigations/warning-letters/purolea-cosmetics-lab-722591-04022026">21 CFR 211.22(c)</a>
+        — the quality unit's responsibility — not a model defect.
+      </p>
+      <p>
+        three different vocabularies. one shape. <em>the output has to be able to abstain, and a
+        process has to verify it does.</em> a lab calls it an eval. a paper calls it calibrated
+        abstention. a regulator calls it accountability. it's the same rule.
+      </p>
+
+      <h2>the thing i built</h2>
+      <p>
+        <strong>cite-or-refuse</strong> is a grounded RAG with exactly one rule: cite a real source,
+        or honestly say "not in the docs." never guess.
+      </p>
+      <p>
+        the part i actually cared about: i made <em>refusing</em> a first-class eval. honestly
+        saying "i don't know" scores as a PASS, not a gap. every reply is forced into one of three
+        shapes, which is what makes faithfulness checkable instead of vibes:
+      </p>
+      <ul>
+        <li><code>answer</code> — a retrieved sentence addresses the question, with a citation.</li>
+        <li><code>not_in_sources</code> — the docs don't support an answer, so it says so.</li>
+        <li><code>out_of_scope</code> — the question isn't this assistant's job.</li>
+      </ul>
+      <p>
+        it runs fully offline. no API key, no network. synthetic data — a fictional product —
+        because the method is the point, not the data.
+      </p>
+      <p>
+        that is, almost line for line, the rule those three authorities had each already written
+        down. i'm not claiming i got there first — i didn't; all three predate this repo. which
+        would make for a tidy "great minds" ending, except building <em>on</em> a rule and
+        <em>obeying</em> it are not the same thing.
+      </p>
+
+      <h2>the two times my own system broke it</h2>
+      <p>
+        before publishing i ran an adversarial review — not on the corpus, on the <em>system</em>. i
+        wanted to know where it lied. it found out, fast.
+      </p>
+      <p class="q">"can i password-protect a share link?"</p>
+      <p>
+        the docs talk about share links. they never once mention passwords. a faithful system should
+        refuse. mine cheerfully cited the generic share-link sentence — because the question and the
+        sentence both contain "share" and "link," and that overlap was enough to score them as
+        relevant. the system built to stop confident hallucination was confidently hallucinating, on
+        its own demo.
+      </p>
+      <p>
+        so i patched it, and — this is the part that matters — i ran the review <em>again</em>. the
+        second round caught that my patch was a patch, not a fix: it still hallucinated on
+        undocumented <em>sub-features</em>, and my README was quietly overclaiming what the system
+        could do. that second round is the entire reason i trust the project now.
+      </p>
+      <p>
+        root cause: the relevance score gave <em>zero</em> weight to the one word that made the
+        question unanswerable — "password." retrieval rewarded the words that matched and never
+        penalized the word that existed nowhere in the docs. exactly OpenAI's point, one layer down:
+        the scoring rewarded a confident match and was blind to the missing piece.
+      </p>
+      <p>
+        the fix is two cheap gates: an <strong>undocumented-term gate</strong> (a question naming
+        something that appears nowhere in the corpus gets refused — matched words don't get to drown
+        out the unmatched one), plus light <strong>morphological normalization</strong> so the gate
+        isn't fooled by plurals and word forms. verified after: zero confident hallucinations on the
+        review's probes, zero over-refusals on cases that <em>should</em> answer. the failing
+        paraphrases are pinned into the eval as fixed cases so they can't regress.
+      </p>
+
+      <h2>why three authorities and one small repo end up in the same place</h2>
+      <p>
+        i build grounded RAG for the kind of regulated documents nobody wants to read. in that world
+        the FDA letter isn't an abstraction — it's the literal job. "i don't know" is not a weakness
+        to engineer away; it's the control. and a control you can't measure isn't a control.
+      </p>
+      <p>
+        what the convergence actually tells you isn't that i was early — i wasn't; i built on a rule
+        three authorities had already written down. it's that the easy part is <em>agreeing</em>
+        with the rule. a lab, a paper, and a regulator each landed on it without coordinating, and i
+        agreed with all of them. the hard part is the thing the FDA letter is really about and the
+        thing my own review caught: <em>checking that the system obeys the rule when no one is
+        watching.</em> the agreement is cheap. the verification is the work.
+      </p>
+      <p>
+        my system agreed with itself, too. then it broke its own rule twice, and only an adversarial
+        pass made it honest. that's the whole point — not that i wrote the rule down, but that i
+        tried to break it before anyone else could.
+      </p>
+
+      <div class="endcap">
+        <p>the code, the eval, and the full saga (including the first round's failure):</p>
+        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/cite-or-refuse">github.com/shryu1994/cite-or-refuse →</a>
+      </div>
+    </div>
+  </article>
+
+  <div class="article__foot">
+    <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+    <p class="pv-label">cite a real source, or refuse</p>
+  </div>
+
+</body>
+</html>
