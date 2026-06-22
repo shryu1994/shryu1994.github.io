@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>i shipped a RAG that refuses to answer — then caught it breaking its own rule</title>
-<meta name="description" content="A devlog on cite-or-refuse: making refusal a first-class eval, and the adversarial review that caught the system breaking its own one rule — twice." />
+<meta name="description" content="A devlog on cite-or-refuse: making refusal a first-class eval, and the adversarial review that caught the system breaking its own rule — twice." />
 <meta property="og:title" content="i shipped a RAG that refuses to answer — then caught it breaking its own rule" />
 <meta property="og:description" content="Making refusal a first-class eval — and the adversarial review that caught the system confidently hallucinating on its own demo." />
 <meta property="og:type" content="article" />
@@ -34,6 +34,9 @@
   .prose p { margin: 1.35rem 0; }
   .prose em { font-style: italic; color: var(--pine); }
   .prose strong { font-weight: 600; }
+  .prose a:not(.pv-btn) { color: var(--pine); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--pine) 40%, transparent); }
+  .prose a:not(.pv-btn):hover { text-decoration-color: var(--pine); }
   .prose h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em;
     line-height: 1.2; margin: 2.8rem 0 0.2rem; }
   .prose ul, .prose ol { margin: 1.35rem 0; padding-left: 1.3rem; }
