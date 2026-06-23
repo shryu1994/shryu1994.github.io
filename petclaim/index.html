@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>펫 클레임 가드 — 펫 사료·영양제 광고 문구 → 금지표현·적발사례 인용 or "근거 없음"</title>
+<meta name="description" content="한국 펫 사료·영양제 광고 문구를 농식품부 표시광고 금지표현과 한국소비자원 적발사례에 대조해, 근거와 함께 경고하거나 유사 기준·선례가 없으면 정직하게 '사람 검토'로 거부합니다." />
+
+<!-- Provenance design system fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+<link rel="stylesheet" href="../provenance.css" />
+
+<style>
+  body { background: var(--paper); color: var(--ink); font-family: var(--font-kr); margin: 0; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) 1.5rem 5rem; }
+  .demo-input { width: 100%; box-sizing: border-box; min-height: 92px; resize: vertical;
+    font-family: var(--font-kr); font-size: 1.0625rem; line-height: 1.6; color: var(--ink);
+    background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: var(--radius);
+    padding: 0.85rem 1rem; }
+  .demo-input:focus { outline: none; border-color: var(--pine); }
+  .examples { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; }
+  .chip { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-muted);
+    background: var(--paper-sunken); border: 1px solid var(--line); border-radius: 999px;
+    padding: 0.25rem 0.7rem; cursor: pointer; }
+  .chip:hover { border-color: var(--pine); color: var(--pine); }
+  .result { margin-top: 1.5rem; }
+  .verdict { border-radius: var(--radius); padding: 1rem 1.1rem; border-left: 4px solid; }
+  .verdict h3 { margin: 0 0 0.35rem; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 0.02em; }
+  .verdict p { margin: 0; font-size: 0.98rem; line-height: 1.6; color: var(--ink-muted); }
+  .v-flagged { background: rgba(155,44,44,0.07); border-color: #9B2C2C; }
+  .v-flagged h3 { color: #9B2C2C; }
+  .v-nobasis { background: var(--ochre-wash); border-color: var(--ochre); }
+  .v-nobasis h3 { color: var(--ochre); }
+  .v-evidence { font-weight: 600; color: var(--ink); }
+  .v-src { display: inline-block; margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.8rem; }
+  .v-src a { color: var(--pine); }
+  .foot { margin-top: 2.5rem; font-size: 0.85rem; color: var(--ink-faint); line-height: 1.7; }
+  .foot a { color: var(--pine); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="pv-label">PET CLAIM GUARD · 데모</p>
+  <h1 class="pv-display">광고 문구를, <em>처분 기준</em>에 대보다.</h1>
+  <p class="pv-lede">펫 사료·영양제 광고 문구를 붙여넣으면 — 농식품부 표시광고 <strong>금지표현</strong>과 한국소비자원 <strong>적발사례</strong>에 대조해 근거와 함께 경고하거나, 유사 기준·선례가 없으면 <em>"사람 검토"</em>로 정직하게 거부합니다. 없다는 걸 근거로 "안전"이라 말하지 않습니다.</p>
+
+  <textarea id="q" class="demo-input" placeholder="예: 우리 강아지 사료는 결석 예방에 탁월하고 관절기능 강화에도 좋아요"></textarea>
+  <div class="examples" id="examples"></div>
+  <p style="margin:0.9rem 0 0"><button class="pv-btn pv-btn--primary" onclick="run()">검사하기</button></p>
+
+  <div class="result" id="out"></div>
+
+  <hr class="pv-rule" style="margin:2.5rem 0 0" />
+  <p class="foot">
+    <strong>v0 데모 — 정직한 한계.</strong> 코퍼스 <strong>27건</strong>(농식품부 사료 표시광고 가이드라인 금지표현 7 + 한국소비자원 실태조사 적발사례 20, <em>전부 출처 인용</em>). 검색은 문자 유사도 v0이라 표현이 크게 다르면 놓칠 수 있고, 합법/위법을 <em>단정</em>하지 않습니다 — 선례·기준 제시로 사람 판단을 돕습니다.<br />
+    자매 도구: <a href="../precedent/">건기식·화장품 광고 처분 선례 검색</a> · <a href="../">sh-ryu.com</a>
+  </p>
+</div>
+
+<script>
+const G="https://www.dailyvet.co.kr/news/industry/39825";
+const M="https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7";
+const N="https://www.newspet.co.kr/news/articleView.html?idxno=6302";
+const RULES=[
+ {id:"R1",expression:"결석 예방",src:G},
+ {id:"R2",expression:"알러지 예방",src:G},
+ {id:"R3",expression:"관절기능 강화",src:G},
+ {id:"R4",expression:"시력 개선",src:G},
+ {id:"R5",expression:"질병 치료",src:G},
+ {id:"R6",expression:"아토피",src:G},
+ {id:"R7",expression:"치주질환",src:G}];
+const CASES=[
+ {id:"C1",text:"관절통증 완화",src:M},
+ {id:"C2",text:"슬개골탈구 예방",src:M},
+ {id:"C3",text:"골다공증 예방",src:M},
+ {id:"C4",text:"백내장 억제",src:M},
+ {id:"C5",text:"녹내장 예방",src:M},
+ {id:"C6",text:"각막염 예방",src:M},
+ {id:"C7",text:"기관지 협착증",src:M},
+ {id:"C8",text:"천식 예방",src:M},
+ {id:"C9",text:"호흡기 질병 억제",src:M},
+ {id:"C10",text:"만성 신장질환 개선",src:M},
+ {id:"C11",text:"방광염 완화",src:M},
+ {id:"C12",text:"결석 영양제",src:M},
+ {id:"C13",text:"구내염 개선",src:M},
+ {id:"C14",text:"치주염 억제",src:M},
+ {id:"C15",text:"잇몸치료 보조",src:M},
+ {id:"C16",text:"간 재생",src:M},
+ {id:"C17",text:"간 질환 치유",src:M},
+ {id:"C18",text:"질병 치료 보조",src:M},
+ {id:"C19",text:"설사·장염·변비 완화",src:M},
+ {id:"C20",text:"심장질환에 특화된 반려동물용 영양제",src:N}];
+const THRESHOLD=0.5;
+const EXAMPLES=["우리 사료는 결석 예방에 탁월합니다","백내장 억제에 좋은 눈 영양제","관절통증 완화 + 슬개골탈구 예방","신선한 닭가슴살로 만든 사료"];
+
+function bigrams(s){s=s.replace(/\s+/g,"");const b=new Set();if(s.length>=2){for(let i=0;i<s.length-1;i++)b.add(s.slice(i,i+2));}else if(s)b.add(s);return b;}
+function overlap(a,b){const A=bigrams(a),B=bigrams(b);if(!A.size||!B.size)return 0;let n=0;for(const x of A)if(B.has(x))n++;return n/Math.min(A.size,B.size);}
+function run(){
+ const q=document.getElementById("q").value.trim();const out=document.getElementById("out");
+ if(!q){out.innerHTML="";return;}
+ let best={score:0};
+ for(const r of RULES){const s=overlap(q,r.expression);if(s>best.score)best={score:s,kind:"금지표현",ev:r.expression,src:r.src};}
+ for(const c of CASES){const s=overlap(q,c.text);if(s>best.score)best={score:s,kind:"적발사례",ev:c.text,src:c.src};}
+ if(best.score<THRESHOLD){
+  out.innerHTML=`<div class="verdict v-nobasis"><h3>🟡 NO_BASIS — 근거 없음</h3><p>유사한 금지표현·적발사례를 찾지 못했습니다 → 사람 검토 권고. 없다는 것을 근거로 "안전"이라 단정하지 않습니다.</p></div>`;
+ }else{
+  out.innerHTML=`<div class="verdict v-flagged"><h3>⚠️ FLAGGED — 유사 ${best.kind} 발견</h3><p>입력 문구가 ${best.kind} <span class="v-evidence">"${best.ev}"</span>와 유사합니다. <span style="color:var(--ink-faint)">(겹침 ${best.score.toFixed(2)})</span></p><span class="v-src">근거 출처: <a href="${best.src}" target="_blank" rel="noopener">${best.src}</a></span></div>`;
+ }
+}
+(function(){
+ const box=document.getElementById("examples");
+ EXAMPLES.forEach(function(ex){
+  const c=document.createElement("span"); c.className="chip"; c.textContent=ex;
+  c.onclick=function(){document.getElementById("q").value=ex; run();};
+  box.appendChild(c);
+ });
+})();
+</script>
+</body>
+</html>
