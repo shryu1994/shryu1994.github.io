@@ -130,56 +130,61 @@
 
       <h2>what broke when i ran it</h2>
       <p>
-        i ran three systems on the same 45 cases: a naive baseline that always answers, the
-        cite-or-refuse gate method, and a real LLM (claude, via subscription — the harness is
-        vendor-neutral). four things fell out, and i'm leading with them because they're the point.
+        i ran four systems on the same 72 cases: a naive baseline that always answers, the
+        cite-or-refuse gate method, and two real LLMs (claude haiku and sonnet, via subscription —
+        the harness is vendor-neutral). four things fell out, and i'm leading with them because
+        they're the point. (the <code>claude</code> column below is haiku; sonnet is within a case
+        or two of it on every row — see below.)
       </p>
       <table>
-        <thead><tr><th>on 45 cases</th><th>naive</th><th>grounded</th><th>claude</th></tr></thead>
+        <thead><tr><th>on 72 cases</th><th>naive</th><th>grounded</th><th>claude</th></tr></thead>
         <tbody>
-          <tr><td>overall correct</td><td class="num">0.27</td><td class="num">0.69</td><td class="num win">0.93</td></tr>
-          <tr><td>"joint score" (gameable)</td><td class="num">0.70</td><td class="num">0.27</td><td class="num">0.91</td></tr>
-          <tr><td>abstains for right reason</td><td class="num">0.00</td><td class="num">0.32</td><td class="num">0.71</td></tr>
-          <tr><td>over-refuses answerable</td><td class="num">0.00</td><td class="num">0.75</td><td class="num">0.00</td></tr>
-          <tr><td>citations faithful (judge)</td><td class="num">—</td><td class="num">—</td><td class="num win">1.00</td></tr>
+          <tr><td>overall correct</td><td class="num">0.29</td><td class="num">0.67</td><td class="num win">0.93</td></tr>
+          <tr><td>"joint score" (gameable)</td><td class="num">0.70</td><td class="num">0.22</td><td class="num">0.94</td></tr>
+          <tr><td>abstains for right reason</td><td class="num">0.00</td><td class="num">0.28</td><td class="num">0.78</td></tr>
+          <tr><td>over-refuses answerable</td><td class="num">0.00</td><td class="num">0.81</td><td class="num">0.00</td></tr>
+          <tr><td>citations faithful (judge)</td><td class="num">—</td><td class="num">—</td><td class="num">0.92</td></tr>
         </tbody>
       </table>
       <p>
         <strong>1. the obvious score is gameable.</strong> the natural "joint score" (the field's
         convention, weighting answer-accuracy 0.7) <em>rewards a system that never abstains.</em> the
-        always-answer baseline beats the grounded one on the joint — 0.70 to 0.27 — while scoring 0.27
-        against the grounded system's 0.69 on "did it do the right thing on every item." so the
+        always-answer baseline beats the grounded one on the joint — 0.70 to 0.22 — while scoring 0.29
+        against the grounded system's 0.67 on "did it do the right thing on every item." so the
         headline can't be the joint. a benchmark about knowing when to stop can't use a metric you win
         by never stopping.
       </p>
       <p>
-        <strong>2. knowing when to refuse is far easier than knowing why.</strong> the real model
-        abstains on 89% of the cases it should — but names the <em>right reason</em> only 71% of the
-        time. it can tell it shouldn't answer; it can't always say whether the question was
-        underspecified, built on a false premise, or simply not in the docs. (the grounded baseline is
-        worse: it abstains 93% but gets the reason 32%.) this is RefusalBench's
-        "detection ≫ categorization" finding, reproduced on a real model in a regulated setting.
+        <strong>2. knowing when to refuse is far easier than knowing why.</strong> both models abstain
+        on ~89% of the cases they should — but name the <em>right reason</em> only ~78–80% of the time.
+        they can tell they shouldn't answer; they can't always say whether the question was
+        underspecified, built on a false premise, or simply not in the docs. and scale barely helps: a
+        right-reason gap that looked real on an earlier 45-case run (0.71 vs 0.82) collapsed to about
+        one case when i grew the set to 72 — it was small-sample noise. (the grounded baseline is far
+        worse: it abstains 91% but gets the reason 28%.) this reproduces RefusalBench's
+        "detection ≫ categorization" <em>and</em> its "neither scale nor extended reasoning improves
+        refusal" — on real models, in a regulated setting.
       </p>
       <p>
         <strong>3. mis-calibration runs both ways.</strong> the naive system over-answers everything.
-        the cite-or-refuse gate <em>over-refuses</em> — 0.75 on naturally-phrased answerable questions,
+        the cite-or-refuse gate <em>over-refuses</em> — 0.81 on naturally-phrased answerable questions,
         because its conservative guard trips on ordinary words the corpus doesn't happen to use. the
-        LLM is the best-calibrated of the three, but it still over-answers three cases it should have
-        refused — two <em>underspecified</em> and one built on a false premise. underspecified is the
-        category RefusalBench and UAEval4RAG both rate hardest. you have to test where a behavior
-        should occur <em>and</em> where it shouldn't, or you only see half the failure.
+        LLMs are the best-calibrated of the lot, but they still over-answer a handful of cases they
+        should have refused — most of them <em>underspecified</em>, the category RefusalBench and
+        UAEval4RAG both rate hardest. you have to test where a behavior should occur <em>and</em> where
+        it shouldn't, or you only see half the failure.
       </p>
       <p>
         <strong>4. when it answers, the citations hold.</strong> the faithfulness judge confirmed
-        every one of the model's answers cited a span that actually supported the claim (15/15). so in
-        this regulated setting the failure mode isn't bad citations — it's the abstention decision:
+        nearly every answer cited a span that actually supported the claim (sonnet 26/26, haiku 23/25).
+        so in this regulated setting the failure mode isn't bad citations — it's the abstention decision:
         <em>when</em> to stop and <em>why</em>. that's the thing worth measuring, and the thing the
         default metric throws away.
       </p>
 
       <h2>why i'm putting it in the open</h2>
       <p>
-        i don't think the number that matters is a leaderboard win. the first run is one small model
+        i don't think the number that matters is a leaderboard win. these runs are two small models
         on a small synthetic corpus, and i'm saying so. what i think is worth shipping is the
         <em>shape</em> of the measurement: refusal as a passing answer, credited only for the right
         reason, on the kind of documents where that's the whole job — and a side-by-side that shows
