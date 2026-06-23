@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>the default RAG metric scores a correct "i don't know" as NaN — so i built a benchmark where it's a pass</title>
+<meta name="description" content="ProvenanceBench: a faithfulness + justified-abstention benchmark for regulated documentation, where a correct refusal is a first-class pass — credited only for the right reason. What broke when I ran it on a real model." />
+<meta property="og:title" content="the default RAG metric scores a correct 'i don't know' as NaN — so i built a benchmark where it's a pass" />
+<meta property="og:description" content="ProvenanceBench — refusal scored as a passing answer, on regulated docs. The default metric returns NaN for a correct refusal; here's the benchmark that scores it, and what a real model got wrong." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sh-ryu.com/writing/provenancebench/" />
+<meta name="twitter:card" content="summary" />
+<link rel="canonical" href="https://sh-ryu.com/writing/provenancebench/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../provenance.css" />
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent); border-bottom: 1px solid var(--line); }
+  .nav__in { max-width: 720px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; letter-spacing: 0.02em;
+    text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; gap: 0.45em; }
+  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
+  .nav__back { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--ink-muted); text-decoration: none; }
+  .nav__back:hover { color: var(--pine); }
+
+  .article { max-width: 680px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) 1.5rem 2rem; }
+  .article__meta { margin-bottom: 1.6rem; }
+  .article__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0.9rem 0 0; }
+
+  .prose { font-size: 1.08rem; line-height: 1.72; color: var(--ink); max-width: 65ch; }
+  .prose p { margin: 1.35rem 0; }
+  .prose em { font-style: italic; color: var(--pine); }
+  .prose strong { font-weight: 600; }
+  .prose a:not(.pv-btn) { color: var(--pine); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--pine) 40%, transparent); }
+  .prose a:not(.pv-btn):hover { text-decoration-color: var(--pine); }
+  .prose h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em;
+    line-height: 1.2; margin: 2.8rem 0 0.2rem; }
+  .prose ul, .prose ol { margin: 1.35rem 0; padding-left: 1.3rem; }
+  .prose li { margin: 0.55rem 0; padding-left: 0.2rem; }
+  .prose li::marker { color: var(--ink-faint); }
+  .prose code { font-family: var(--font-mono); font-size: 0.82em; background: var(--paper-sunken);
+    border: 1px solid var(--line); border-radius: 5px; padding: 0.08em 0.4em; }
+  .prose blockquote { margin: 1.5rem 0; padding: 0.2rem 0 0.2rem 1.2rem; border-left: 2px solid var(--pine);
+    font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--pine); line-height: 1.5; }
+  .prose blockquote p { margin: 0.6rem 0; }
+  .prose .kicker { font-weight: 600; }
+  .prose table { width: 100%; border-collapse: collapse; margin: 1.6rem 0; font-size: 0.93rem;
+    font-family: var(--font-mono); }
+  .prose th, .prose td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); }
+  .prose th { color: var(--ink-muted); font-weight: 500; }
+  .prose td.num { text-align: right; }
+  .prose .win { color: var(--pine); font-weight: 600; }
+
+  .endcap { margin: 2.6rem 0 0; padding: 1.4rem 1.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius); background: var(--paper-raised); }
+  .endcap p { margin: 0 0 0.9rem; font-size: 0.98rem; color: var(--ink-muted); }
+  .article__foot { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .article__foot .pv-label { margin: 0; }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+      <a class="nav__back" href="/writing/">← writing</a>
+    </div>
+  </nav>
+
+  <article class="article">
+    <header class="article__meta">
+      <p class="pv-label">Devlog · 2026 · <span class="pv-cite">ProvenanceBench</span></p>
+      <h1 class="article__title">the default RAG metric scores a correct "i don't know" as NaN — so i built a benchmark where it's a pass</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        in the regulated documents i build for, a confident wrong answer isn't an embarrassment —
+        it's a compliance event. so the <em>correct</em> behavior, when the documents don't support
+        an answer, is to refuse. "i don't know" is the required output, not a failure.
+      </p>
+      <p>
+        here's the problem. the default RAG faithfulness metric — RAGAS — returns <strong>NaN</strong>
+        for a correct refusal. not a low score. not a pass. NaN. and it's on purpose. from the
+        maintainer, closing
+        <a href="https://github.com/explodinggradients/ragas/issues/794">issue #794</a>:
+      </p>
+      <blockquote><p>"this is intentional. since the system refuses to answer it does not make sense to score it … therefore it's NaN."</p></blockquote>
+      <p>
+        a refusal produces no grounded statements, so <code>faithful_statements / num_statements</code>
+        divides by zero and the metric gives up. which means: the one behavior my domain most
+        requires is invisible to the standard metric. that's backwards.
+      </p>
+      <p>
+        so i built <strong>ProvenanceBench</strong> — a faithfulness + justified-abstention benchmark
+        for regulated documentation, where a correct refusal is a first-class <em>pass</em>, and
+        credited only when the system abstains <em>for the right reason</em>.
+      </p>
+
+      <h2>not the first refusal benchmark — here's what's new, and what isn't</h2>
+      <p>
+        this stands on work i cite, not around it. a regulator, a frontier lab, and a frontier paper
+        <a href="/writing/fda-anthropic-same-rule/">already wrote down the rule</a>: a system that
+        doesn't know should say so. and the eval world has built pieces of the measurement —
+        <a href="https://github.com/facebookresearch/AbstentionBench">AbstentionBench</a> scores
+        abstention as correct, <a href="https://arxiv.org/abs/2412.12300">UAEval4RAG</a> names six
+        categories of unanswerable request,
+        <a href="https://arxiv.org/abs/2510.10390">RefusalBench</a> shows frontier models score below
+        50% on multi-document refusal, <a href="https://github.com/princeton-nlp/ALCE">ALCE</a> scores
+        citation quality.
+      </p>
+      <p>
+        scoring refusal <em>next to</em> citations, per item, isn't new either —
+        <a href="https://arxiv.org/abs/2505.17503">CReSt</a> and
+        <a href="https://arxiv.org/abs/2409.11242">Trust-Align</a> already do that. what i haven't
+        found is this specific slice: a <em>regulated</em> corpus where a justified refusal is a
+        first-class pass <em>and</em> is credited only for the right reason — the taxonomy-matched
+        one. that's an open gap as far as i can tell — an absence-of-evidence claim, not a proof —
+        and it's what ProvenanceBench targets. synthetic data only — the method is the point, not the
+        data — and every gold label is adversarially re-checked against the corpus before it ships (a
+        benchmark about unsupported claims can't ship unsupported gold labels).
+      </p>
+
+      <h2>what broke when i ran it</h2>
+      <p>
+        i ran three systems on the same 45 cases: a naive baseline that always answers, the
+        cite-or-refuse gate method, and a real LLM (claude, via subscription — the harness is
+        vendor-neutral). four things fell out, and i'm leading with them because they're the point.
+      </p>
+      <table>
+        <thead><tr><th>on 45 cases</th><th>naive</th><th>grounded</th><th>claude</th></tr></thead>
+        <tbody>
+          <tr><td>overall correct</td><td class="num">0.27</td><td class="num">0.69</td><td class="num win">0.93</td></tr>
+          <tr><td>"joint score" (gameable)</td><td class="num">0.70</td><td class="num">0.27</td><td class="num">0.91</td></tr>
+          <tr><td>abstains for right reason</td><td class="num">0.00</td><td class="num">0.32</td><td class="num">0.71</td></tr>
+          <tr><td>over-refuses answerable</td><td class="num">0.00</td><td class="num">0.75</td><td class="num">0.00</td></tr>
+          <tr><td>citations faithful (judge)</td><td class="num">—</td><td class="num">—</td><td class="num win">1.00</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>1. the obvious score is gameable.</strong> the natural "joint score" (the field's
+        convention, weighting answer-accuracy 0.7) <em>rewards a system that never abstains.</em> the
+        always-answer baseline beats the grounded one on the joint — 0.70 to 0.27 — while scoring 0.27
+        against the grounded system's 0.69 on "did it do the right thing on every item." so the
+        headline can't be the joint. a benchmark about knowing when to stop can't use a metric you win
+        by never stopping.
+      </p>
+      <p>
+        <strong>2. knowing when to refuse is far easier than knowing why.</strong> the real model
+        abstains on 89% of the cases it should — but names the <em>right reason</em> only 71% of the
+        time. it can tell it shouldn't answer; it can't always say whether the question was
+        underspecified, built on a false premise, or simply not in the docs. (the grounded baseline is
+        worse: it abstains 93% but gets the reason 32%.) this is RefusalBench's
+        "detection ≫ categorization" finding, reproduced on a real model in a regulated setting.
+      </p>
+      <p>
+        <strong>3. mis-calibration runs both ways.</strong> the naive system over-answers everything.
+        the cite-or-refuse gate <em>over-refuses</em> — 0.75 on naturally-phrased answerable questions,
+        because its conservative guard trips on ordinary words the corpus doesn't happen to use. the
+        LLM is the best-calibrated of the three, but it still over-answers three cases it should have
+        refused — two <em>underspecified</em> and one built on a false premise. underspecified is the
+        category RefusalBench and UAEval4RAG both rate hardest. you have to test where a behavior
+        should occur <em>and</em> where it shouldn't, or you only see half the failure.
+      </p>
+      <p>
+        <strong>4. when it answers, the citations hold.</strong> the faithfulness judge confirmed
+        every one of the model's answers cited a span that actually supported the claim (15/15). so in
+        this regulated setting the failure mode isn't bad citations — it's the abstention decision:
+        <em>when</em> to stop and <em>why</em>. that's the thing worth measuring, and the thing the
+        default metric throws away.
+      </p>
+
+      <h2>why i'm putting it in the open</h2>
+      <p>
+        i don't think the number that matters is a leaderboard win. the first run is one small model
+        on a small synthetic corpus, and i'm saying so. what i think is worth shipping is the
+        <em>shape</em> of the measurement: refusal as a passing answer, credited only for the right
+        reason, on the kind of documents where that's the whole job — and a side-by-side that shows
+        the standard metric can't score it.
+      </p>
+      <p>
+        the repo is the source of truth. it runs fully offline; the model side runs on a subscription
+        with no API key; every prior-art claim is cited and re-verified; every gold label is checked
+        against the corpus at load time. <span class="kicker">if it scores a refusal as a pass, it's
+        because the system refused — for the right reason.</span>
+      </p>
+
+      <div class="endcap">
+        <p>the spec, the taxonomy, the harness, and every run's report:</p>
+        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/provenance-bench">github.com/shryu1994/provenance-bench →</a>
+      </div>
+    </div>
+  </article>
+
+  <div class="article__foot">
+    <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+    <p class="pv-label">cite a real source, or justifiably abstain</p>
+  </div>
+
+</body>
+</html>
