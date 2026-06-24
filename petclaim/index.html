@@ -4,39 +4,60 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>펫 클레임 가드 — 펫 사료·영양제 광고 문구 → 금지표현·적발사례 인용 or "근거 없음"</title>
-<meta name="description" content="한국 펫 사료·영양제 광고 문구를 농식품부 표시광고 금지표현과 한국소비자원 적발사례에 대조해, 근거와 함께 경고하거나 유사 기준·선례가 없으면 정직하게 '사람 검토'로 거부합니다." />
+<meta name="description" content="펫 사료·영양제 판매페이지 문구를 통째로 붙여넣으면 — 농식품부 표시광고 금지표현·한국소비자원 적발사례에 대조해 위험 표현마다 근거와 함께 표시하거나, 유사 기준·선례가 없으면 정직하게 '사람 검토'로 거부합니다." />
 
 <!-- Provenance design system fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
-<link rel="stylesheet" href="../provenance.css" />
+<link rel="stylesheet" href="provenance.css" />
 
 <style>
   body { background: var(--paper); color: var(--ink); font-family: var(--font-kr); margin: 0; }
-  .wrap { max-width: 720px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) 1.5rem 5rem; }
-  .demo-input { width: 100%; box-sizing: border-box; min-height: 92px; resize: vertical;
-    font-family: var(--font-kr); font-size: 1.0625rem; line-height: 1.6; color: var(--ink);
+  .wrap { max-width: 760px; margin: 0 auto; padding: clamp(2.5rem, 6vw, 5rem) 1.5rem 5rem; }
+  .demo-input { width: 100%; box-sizing: border-box; min-height: 132px; resize: vertical;
+    font-family: var(--font-kr); font-size: 1.0625rem; line-height: 1.7; color: var(--ink);
     background: var(--paper-raised); border: 1px solid var(--line-strong); border-radius: var(--radius);
-    padding: 0.85rem 1rem; }
+    padding: 0.9rem 1rem; }
   .demo-input:focus { outline: none; border-color: var(--pine); }
   .examples { display: flex; flex-wrap: wrap; gap: 0.4rem; margin: 0.75rem 0 0; }
   .chip { font-family: var(--font-mono); font-size: 0.8rem; color: var(--ink-muted);
     background: var(--paper-sunken); border: 1px solid var(--line); border-radius: 999px;
     padding: 0.25rem 0.7rem; cursor: pointer; }
   .chip:hover { border-color: var(--pine); color: var(--pine); }
-  .result { margin-top: 1.5rem; }
-  .verdict { border-radius: var(--radius); padding: 1rem 1.1rem; border-left: 4px solid; }
-  .verdict h3 { margin: 0 0 0.35rem; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 0.02em; }
-  .verdict p { margin: 0; font-size: 0.98rem; line-height: 1.6; color: var(--ink-muted); }
-  .v-flagged { background: rgba(155,44,44,0.07); border-color: #9B2C2C; }
-  .v-flagged h3 { color: #9B2C2C; }
-  .v-nobasis { background: var(--ochre-wash); border-color: var(--ochre); }
-  .v-nobasis h3 { color: var(--ochre); }
-  .v-evidence { font-weight: 600; color: var(--ink); }
-  .v-src { display: inline-block; margin-top: 0.6rem; font-family: var(--font-mono); font-size: 0.8rem; }
-  .v-src a { color: var(--pine); }
+
+  .result { margin-top: 1.75rem; }
+
+  /* — page-level banner — */
+  .banner { border-radius: var(--radius); padding: 1rem 1.1rem; border-left: 4px solid; }
+  .banner h3 { margin: 0 0 0.3rem; font-family: var(--font-mono); font-size: 0.95rem; letter-spacing: 0.02em; }
+  .banner p { margin: 0; font-size: 0.95rem; line-height: 1.6; color: var(--ink-muted); }
+  .b-flagged { background: rgba(155,44,44,0.07); border-color: #9B2C2C; }
+  .b-flagged h3 { color: #9B2C2C; }
+  .b-clear { background: var(--pine-wash); border-color: var(--pine); }
+  .b-clear h3 { color: var(--pine); }
+
+  /* — highlighted original text — */
+  .echo { margin-top: 1.1rem; padding: 1rem 1.1rem; background: var(--paper-raised);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    font-size: 1rem; line-height: 1.9; white-space: pre-wrap; word-break: break-word; }
+  .echo .hl { background: rgba(155,44,44,0.16); border-bottom: 2px solid #9B2C2C;
+    border-radius: 3px; padding: 0.05em 0.15em; font-weight: 500; }
+
+  /* — per-claim evidence cards — */
+  .cards { margin-top: 1.1rem; display: flex; flex-direction: column; gap: 0.75rem; }
+  .card { border: 1px solid var(--line); border-left: 3px solid #9B2C2C; border-radius: var(--radius-sm);
+    background: var(--paper-raised); padding: 0.85rem 1rem; }
+  .card .badge { display: inline-block; font-family: var(--font-mono); font-size: 0.72rem;
+    letter-spacing: 0.03em; color: #9B2C2C; background: rgba(155,44,44,0.10);
+    border-radius: 999px; padding: 0.12rem 0.55rem; margin-bottom: 0.45rem; }
+  .card .claim { font-size: 1rem; color: var(--ink); margin: 0 0 0.35rem; }
+  .card .claim b { background: rgba(155,44,44,0.12); border-radius: 3px; padding: 0 0.1em; }
+  .card .why { font-size: 0.9rem; color: var(--ink-muted); line-height: 1.55; margin: 0.25rem 0 0; }
+  .card .meta { margin-top: 0.5rem; font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-faint); }
+  .card .meta a { color: var(--pine); }
+
   .foot { margin-top: 2.5rem; font-size: 0.85rem; color: var(--ink-faint); line-height: 1.7; }
   .foot a { color: var(--pine); }
 </style>
@@ -44,10 +65,10 @@
 <body>
 <div class="wrap">
   <p class="pv-label">PET CLAIM GUARD · 데모</p>
-  <h1 class="pv-display">광고 문구를, <em>처분 기준</em>에 대보다.</h1>
-  <p class="pv-lede">펫 사료·영양제 광고 문구를 붙여넣으면 — 농식품부 표시광고 <strong>금지표현</strong>과 한국소비자원 <strong>적발사례</strong>에 대조해 근거와 함께 경고하거나, 유사 기준·선례가 없으면 <em>"사람 검토"</em>로 정직하게 거부합니다. 없다는 걸 근거로 "안전"이라 말하지 않습니다.</p>
+  <h1 class="pv-display">판매페이지를, <em>처분 기준</em>에 대보다.</h1>
+  <p class="pv-lede">펫 사료·영양제 광고 문구를 <strong>통째로 붙여넣으면</strong> — 농식품부 표시광고 <strong>금지표현</strong>과 한국소비자원 <strong>적발사례</strong>에 대조해 위험한 표현마다 근거와 함께 표시합니다. 유사 기준·선례가 없으면 <em>"사람 검토"</em>로 정직하게 거부합니다 — 없다는 걸 근거로 "안전"이라 말하지 않습니다.</p>
 
-  <textarea id="q" class="demo-input" placeholder="예: 우리 강아지 사료는 결석 예방에 탁월하고 관절기능 강화에도 좋아요"></textarea>
+  <textarea id="q" class="demo-input" placeholder="예: 우리 강아지 사료는 결석 예방에 탁월하고, 관절기능 강화에도 좋아요. 백내장 억제 효과까지 있는 프리미엄 영양제입니다."></textarea>
   <div class="examples" id="examples"></div>
   <p style="margin:0.9rem 0 0"><button class="pv-btn pv-btn--primary" onclick="run()">검사하기</button></p>
 
@@ -55,68 +76,155 @@
 
   <hr class="pv-rule" style="margin:2.5rem 0 0" />
   <p class="foot">
-    <strong>v0 데모 — 정직한 한계.</strong> 코퍼스 <strong>27건</strong>(농식품부 사료 표시광고 가이드라인 금지표현 7 + 한국소비자원 실태조사 적발사례 20, <em>전부 출처 인용</em>). 검색은 문자 유사도 v0이라 표현이 크게 다르면 놓칠 수 있고, 합법/위법을 <em>단정</em>하지 않습니다 — 선례·기준 제시로 사람 판단을 돕습니다.<br />
+    <strong>v0 데모 — 정직한 한계.</strong> 코퍼스 <strong>27건</strong>(농식품부 사료 표시광고 가이드라인 금지표현 7 + 한국소비자원 실태조사 적발사례 20, <em>전부 출처 인용</em>). 검색은 문자 유사도 v0이라 표현이 크게 다르면 놓칠 수 있고, 위험표현 0개라도 <em>전수 보장은 아닙니다</em>. 합법/위법을 단정하지 않고 — 선례·기준 제시로 사람 판단을 돕습니다.<br />
     자매 도구: <a href="../precedent/">건기식·화장품 광고 처분 선례 검색</a> · <a href="../">sh-ryu.com</a>
   </p>
 </div>
 
-<script>
-const G="https://www.dailyvet.co.kr/news/industry/39825";
-const M="https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7";
-const N="https://www.newspet.co.kr/news/articleView.html?idxno=6302";
-const RULES=[
- {id:"R1",expression:"결석 예방",src:G},
- {id:"R2",expression:"알러지 예방",src:G},
- {id:"R3",expression:"관절기능 강화",src:G},
- {id:"R4",expression:"시력 개선",src:G},
- {id:"R5",expression:"질병 치료",src:G},
- {id:"R6",expression:"아토피",src:G},
- {id:"R7",expression:"치주질환",src:G}];
-const CASES=[
- {id:"C1",text:"관절통증 완화",src:M},
- {id:"C2",text:"슬개골탈구 예방",src:M},
- {id:"C3",text:"골다공증 예방",src:M},
- {id:"C4",text:"백내장 억제",src:M},
- {id:"C5",text:"녹내장 예방",src:M},
- {id:"C6",text:"각막염 예방",src:M},
- {id:"C7",text:"기관지 협착증",src:M},
- {id:"C8",text:"천식 예방",src:M},
- {id:"C9",text:"호흡기 질병 억제",src:M},
- {id:"C10",text:"만성 신장질환 개선",src:M},
- {id:"C11",text:"방광염 완화",src:M},
- {id:"C12",text:"결석 영양제",src:M},
- {id:"C13",text:"구내염 개선",src:M},
- {id:"C14",text:"치주염 억제",src:M},
- {id:"C15",text:"잇몸치료 보조",src:M},
- {id:"C16",text:"간 재생",src:M},
- {id:"C17",text:"간 질환 치유",src:M},
- {id:"C18",text:"질병 치료 보조",src:M},
- {id:"C19",text:"설사·장염·변비 완화",src:M},
- {id:"C20",text:"심장질환에 특화된 반려동물용 영양제",src:N}];
-const THRESHOLD=0.5;
-const EXAMPLES=["우리 사료는 결석 예방에 탁월합니다","백내장 억제에 좋은 눈 영양제","관절통증 완화 + 슬개골탈구 예방","신선한 닭가슴살로 만든 사료"];
+<!--CORPUS:START--><script type="application/json" id="corpus">{"threshold": 0.5, "rules": [{"id": "R1", "expression": "결석 예방", "note": "질병 예방 효과 표현 금지(농식품부 사료 표시광고 가이드라인)", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R2", "expression": "알러지 예방", "note": "질병 예방 효과 표현 금지", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R3", "expression": "관절기능 강화", "note": "생체기능 직접 표시 금지", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R4", "expression": "시력 개선", "note": "생체기능 직접 표시 금지", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R5", "expression": "질병 치료", "note": "의약품 오인 — 질병의 치료·진단·예방·경감·처치 효과 표현 금지(원칙)", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R6", "expression": "아토피", "note": "질병명 표시 원칙 금지(가이드라인 예시: 아토피)", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}, {"id": "R7", "expression": "치주질환", "note": "질병명 표시 원칙 금지(가이드라인 예시: 치주질환)", "source_url": "https://www.dailyvet.co.kr/news/industry/39825"}], "cases": [{"id": "C1", "text": "관절통증 완화", "action": "한국소비자원 실태조사 — 부당광고(질병 치료·완화 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C2", "text": "슬개골탈구 예방", "action": "한국소비자원 실태조사 — 부당광고(질병 예방 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C3", "text": "골다공증 예방", "action": "한국소비자원 실태조사 — 부당광고(질병 예방 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C4", "text": "백내장 억제", "action": "한국소비자원 실태조사 — 부당광고(질병 억제 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C5", "text": "녹내장 예방", "action": "한국소비자원 실태조사 — 부당광고(질병 예방 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C6", "text": "각막염 예방", "action": "한국소비자원 실태조사 — 부당광고(질병 예방 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C7", "text": "기관지 협착증", "action": "한국소비자원 실태조사 — 부당광고(질병명 표시) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C8", "text": "천식 예방", "action": "한국소비자원 실태조사 — 부당광고(질병 예방 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C9", "text": "호흡기 질병 억제", "action": "한국소비자원 실태조사 — 부당광고(질병 억제 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C10", "text": "만성 신장질환 개선", "action": "한국소비자원 실태조사 — 부당광고(질병 개선 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C11", "text": "방광염 완화", "action": "한국소비자원 실태조사 — 부당광고(질병 완화 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C12", "text": "결석 영양제", "action": "한국소비자원 실태조사 — 부당광고(질병명 표시) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C13", "text": "구내염 개선", "action": "한국소비자원 실태조사 — 부당광고(질병 개선 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C14", "text": "치주염 억제", "action": "한국소비자원 실태조사 — 부당광고(질병 억제 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C15", "text": "잇몸치료 보조", "action": "한국소비자원 실태조사 — 부당광고(치료 보조 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C16", "text": "간 재생", "action": "한국소비자원 실태조사 — 부당광고(치료 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C17", "text": "간 질환 치유", "action": "한국소비자원 실태조사 — 부당광고(질병 치유 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C18", "text": "질병 치료 보조", "action": "한국소비자원 실태조사 — 부당광고(치료 보조 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C19", "text": "설사·장염·변비 완화", "action": "한국소비자원 실태조사 — 부당광고(질병 완화 효능 오인) 지적", "source_url": "https://medicalworldnews.co.kr/m/view.php?idx=1510967001&mcode=m83uzr7"}, {"id": "C20", "text": "심장질환에 특화된 반려동물용 영양제", "action": "부당광고 — 일부 온라인몰 표기 삭제 조치", "source_url": "https://www.newspet.co.kr/news/articleView.html?idxno=6302"}], "selftest": [{"q": "우리 사료는 결석 예방에 탁월합니다", "verdict": "FLAGGED", "evidence": "결석 예방"}, {"q": "백내장 억제에 좋은 눈 영양제", "verdict": "FLAGGED", "evidence": "백내장 억제"}, {"q": "신선한 닭가슴살로 만든 사료", "verdict": "NO_BASIS", "evidence": null}]}</script><!--CORPUS:END-->
 
-function bigrams(s){s=s.replace(/\s+/g,"");const b=new Set();if(s.length>=2){for(let i=0;i<s.length-1;i++)b.add(s.slice(i,i+2));}else if(s)b.add(s);return b;}
-function overlap(a,b){const A=bigrams(a),B=bigrams(b);if(!A.size||!B.size)return 0;let n=0;for(const x of A)if(B.has(x))n++;return n/Math.min(A.size,B.size);}
-function run(){
- const q=document.getElementById("q").value.trim();const out=document.getElementById("out");
- if(!q){out.innerHTML="";return;}
- let best={score:0};
- for(const r of RULES){const s=overlap(q,r.expression);if(s>best.score)best={score:s,kind:"금지표현",ev:r.expression,src:r.src};}
- for(const c of CASES){const s=overlap(q,c.text);if(s>best.score)best={score:s,kind:"적발사례",ev:c.text,src:c.src};}
- if(best.score<THRESHOLD){
-  out.innerHTML=`<div class="verdict v-nobasis"><h3>🟡 NO_BASIS — 근거 없음</h3><p>유사한 금지표현·적발사례를 찾지 못했습니다 → 사람 검토 권고. 없다는 것을 근거로 "안전"이라 단정하지 않습니다.</p></div>`;
- }else{
-  out.innerHTML=`<div class="verdict v-flagged"><h3>⚠️ FLAGGED — 유사 ${best.kind} 발견</h3><p>입력 문구가 ${best.kind} <span class="v-evidence">"${best.ev}"</span>와 유사합니다. <span style="color:var(--ink-faint)">(겹침 ${best.score.toFixed(2)})</span></p><span class="v-src">근거 출처: <a href="${best.src}" target="_blank" rel="noopener">${best.src}</a></span></div>`;
- }
+<script>
+// ── 코퍼스(단일 진실원천: data/*.jsonl → scripts/build_corpus.py가 주입) ──
+const CORPUS = JSON.parse(document.getElementById("corpus").textContent);
+const THRESHOLD = CORPUS.threshold;
+const CORPUS_TEXTS = new Set([
+  ...CORPUS.rules.map(r => r.expression),
+  ...CORPUS.cases.map(c => c.text),
+]);
+const EXAMPLES = [
+  "우리 사료는 결석 예방에 탁월합니다",
+  "백내장 억제에 좋은 눈 영양제 + 관절통증 완화",
+  "결석 예방, 알러지 예방, 관절기능 강화까지 한 번에",
+  "신선한 닭가슴살로 만든 사료",
+];
+
+// ── 엔진 미러 (pet_claim_guard/retriever.py + verdict.py 충실 복제) ──
+function bigrams(s) {
+  s = s.replace(/\s+/g, "");
+  const b = new Set();
+  if (s.length >= 2) { for (let i = 0; i < s.length - 1; i++) b.add(s.slice(i, i + 2)); }
+  else if (s) b.add(s);
+  return b;
 }
-(function(){
- const box=document.getElementById("examples");
- EXAMPLES.forEach(function(ex){
-  const c=document.createElement("span"); c.className="chip"; c.textContent=ex;
-  c.onclick=function(){document.getElementById("q").value=ex; run();};
-  box.appendChild(c);
- });
+function overlap(a, b) {
+  const A = bigrams(a), B = bigrams(b);
+  if (!A.size || !B.size) return 0;
+  let n = 0; for (const x of A) if (B.has(x)) n++;
+  return n / Math.min(A.size, B.size);
+}
+function search(query) {
+  const matches = [];
+  for (const r of CORPUS.rules)
+    matches.push({ kind: "rule", id: r.id, evidence: r.expression, why: r.note, src: r.source_url, score: overlap(query, r.expression) });
+  for (const c of CORPUS.cases)
+    matches.push({ kind: "case", id: c.id, evidence: c.text, why: c.action, src: c.source_url, score: overlap(query, c.text) });
+  matches.sort((a, b) => b.score - a.score);
+  return matches;
+}
+function assess(matches) {
+  const top = matches[0];
+  if (!top || top.score < THRESHOLD) return { verdict: "NO_BASIS", top: null };
+  return { verdict: "FLAGGED", top };
+}
+function enforceGrounding(v) {
+  if (v.verdict === "FLAGGED" && !CORPUS_TEXTS.has(v.top.evidence))
+    return { verdict: "NO_BASIS", top: null };  // 위조 가드
+  return v;
+}
+function judge(query) { return enforceGrounding(assess(search(query))); }
+
+// ── 멀티클레임: 문장/구 단위로 쪼개 원문 내 span 보존 ──
+function splitClaims(text) {
+  const claims = [];
+  const re = /[^\n.!?。,、;·•+\/]+/g;
+  let m;
+  while ((m = re.exec(text)) !== null) {
+    const raw = m[0];
+    const lead = raw.length - raw.trimStart().length;
+    const trail = raw.length - raw.trimEnd().length;
+    const t = raw.trim();
+    if (t.length >= 2) claims.push({ text: t, start: m.index + lead, end: m.index + raw.length - trail });
+  }
+  return claims;
+}
+
+function esc(s) {
+  return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function render(text, flagged) {
+  // 원문 재현 + 위험 분절 하이라이트 (flagged는 start 오름차순, 비중첩)
+  let echo = "", i = 0;
+  for (const f of flagged) {
+    echo += esc(text.slice(i, f.start));
+    echo += `<mark class="hl">${esc(text.slice(f.start, f.end))}</mark>`;
+    i = f.end;
+  }
+  echo += esc(text.slice(i));
+
+  const n = flagged.length;
+  let banner;
+  if (n >= 1) {
+    banner = `<div class="banner b-flagged"><h3>⚠️ 위험 표현 ${n}개 — 사람 검토 필요</h3>
+      <p>아래 표현이 농식품부 금지표현·소비자원 적발사례와 유사합니다. 합법/위법을 단정하지 않으며, 기준·선례로 검토를 돕습니다.</p></div>`;
+  } else {
+    banner = `<div class="banner b-clear"><h3>🟢 검출된 위험 표현 없음</h3>
+      <p>코퍼스의 금지표현·적발사례와 유사한 표현을 찾지 못했습니다. 단, <strong>전수 보장은 아닙니다</strong> — 없다는 것을 "안전"이라 단정하지 않습니다. 최종은 사람 검토 권고.</p></div>`;
+  }
+
+  let cards = "";
+  for (const f of flagged) {
+    const kindLabel = f.kind === "rule" ? "금지표현 · 농식품부" : "적발사례 · 소비자원";
+    // 매칭 근거 문구가 분절 안에 그대로 보이면 굵게
+    let claimHtml = esc(f.text);
+    if (f.text.includes(f.evidence))
+      claimHtml = esc(f.text).replace(esc(f.evidence), `<b>${esc(f.evidence)}</b>`);
+    cards += `<div class="card">
+      <span class="badge">${kindLabel} · 겹침 ${f.score.toFixed(2)}</span>
+      <p class="claim">"${claimHtml}"</p>
+      <p class="why">근거: 「${esc(f.evidence)}」 — ${esc(f.why)}</p>
+      <p class="meta">출처: <a href="${f.src}" target="_blank" rel="noopener">${f.src}</a></p>
+    </div>`;
+  }
+
+  return `${banner}<div class="echo">${echo}</div>${n ? `<div class="cards">${cards}</div>` : ""}`;
+}
+
+function run() {
+  const text = document.getElementById("q").value;
+  const out = document.getElementById("out");
+  if (!text.trim()) { out.innerHTML = ""; return; }
+
+  const flagged = [];
+  for (const c of splitClaims(text)) {
+    const v = judge(c.text);
+    if (v.verdict === "FLAGGED")
+      flagged.push({ start: c.start, end: c.end, text: c.text, ...v.top });
+  }
+  out.innerHTML = render(text, flagged);
+}
+
+// ── 예시 칩 ──
+(function () {
+  const box = document.getElementById("examples");
+  EXAMPLES.forEach(function (ex) {
+    const c = document.createElement("span");
+    c.className = "chip"; c.textContent = ex;
+    c.onclick = function () { document.getElementById("q").value = ex; run(); };
+    box.appendChild(c);
+  });
+})();
+
+// ── selftest: JS 미러가 Python 엔진과 같은 판정을 내는지 자기검증 ──
+(function selftest() {
+  let fail = 0;
+  for (const t of CORPUS.selftest) {
+    const v = judge(t.q);
+    if (v.verdict !== t.verdict) { console.error("selftest FAIL:", t.q, "expected", t.verdict, "got", v.verdict); fail++; }
+    else if (t.verdict === "FLAGGED" && v.top.evidence !== t.evidence) { console.error("selftest evidence FAIL:", t.q); fail++; }
+  }
+  const n = CORPUS.selftest.length;
+  console[fail ? "error" : "log"](`pet-claim-guard selftest: ${n - fail}/${n} pass (JS↔Python parity)`);
 })();
 </script>
 </body>
