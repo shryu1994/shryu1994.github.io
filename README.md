@@ -1,6 +1,6 @@
 # shryu1994.github.io
 
-Personal site of **Seunghyun Ryu (류승현)** — AI for regulated work.
+Personal site of **Seunghyun Ryu (류승현)** — grounded RAG that cites or refuses.
 
 Built on **Provenance**, a small in-house design system (`provenance.css`):
 warm bond paper, ink, a pine signature, and a citation-mark motif —
