@@ -1,0 +1,205 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>i ran my prompt-analysis tool on my own logs. 82% of my "questions" weren't me.</title>
+<meta name="description" content="promptprint measures how you question your AI coding agent, 100% locally. I dogfooded it and found it was overcounting my questions ~5x — most of the log wasn't me, it was machine traffic. Here's the fix, and why the tool now reports its own filter ratio instead of hiding it." />
+<meta property="og:title" content="i ran my prompt-analysis tool on my own logs. 82% of my 'questions' weren't me." />
+<meta property="og:description" content="A metrics tool you can't audit is just a vibe. promptprint now prints a trust receipt every run — scanned N blocks, excluded X% machine/injection, kept K human questions — and leaves the residue it can't cleanly sort in plain sight." />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://sh-ryu.com/writing/promptprint/" />
+<meta name="twitter:card" content="summary" />
+<link rel="canonical" href="https://sh-ryu.com/writing/promptprint/" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="../../provenance.css" />
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+    background: color-mix(in srgb, var(--paper) 82%, transparent); border-bottom: 1px solid var(--line); }
+  .nav__in { max-width: 720px; margin: 0 auto; padding: 0.85rem 1.5rem;
+    display: flex; align-items: center; justify-content: space-between; }
+  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem; letter-spacing: 0.02em;
+    text-decoration: none; color: var(--ink); display: inline-flex; align-items: center; gap: 0.45em; }
+  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
+  .nav__back { font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em;
+    color: var(--ink-muted); text-decoration: none; }
+  .nav__back:hover { color: var(--pine); }
+
+  .article { max-width: 680px; margin: 0 auto; padding: clamp(3rem, 7vw, 5rem) 1.5rem 2rem; }
+  .article__meta { margin-bottom: 1.6rem; }
+  .article__title { font-family: var(--font-display); font-weight: 500; font-size: clamp(1.9rem, 1.3rem + 2.6vw, 2.9rem);
+    line-height: 1.12; letter-spacing: -0.015em; margin: 0.9rem 0 0; }
+
+  .prose { font-size: 1.08rem; line-height: 1.72; color: var(--ink); max-width: 65ch; }
+  .prose p { margin: 1.35rem 0; }
+  .prose em { font-style: italic; color: var(--pine); }
+  .prose strong { font-weight: 600; }
+  .prose a:not(.pv-btn) { color: var(--pine); text-decoration: underline; text-underline-offset: 2px;
+    text-decoration-color: color-mix(in srgb, var(--pine) 40%, transparent); }
+  .prose a:not(.pv-btn):hover { text-decoration-color: var(--pine); }
+  .prose h2 { font-family: var(--font-display); font-weight: 500; font-size: 1.55rem; letter-spacing: -0.01em;
+    line-height: 1.2; margin: 2.8rem 0 0.2rem; }
+  .prose ul, .prose ol { margin: 1.35rem 0; padding-left: 1.3rem; }
+  .prose li { margin: 0.55rem 0; padding-left: 0.2rem; }
+  .prose li::marker { color: var(--ink-faint); }
+  .prose code { font-family: var(--font-mono); font-size: 0.82em; background: var(--paper-sunken);
+    border: 1px solid var(--line); border-radius: 5px; padding: 0.08em 0.4em; }
+  .prose blockquote { margin: 1.5rem 0; padding: 0.2rem 0 0.2rem 1.2rem; border-left: 2px solid var(--pine);
+    font-family: var(--font-display); font-style: italic; font-size: 1.15rem; color: var(--pine); line-height: 1.5; }
+  .prose blockquote p { margin: 0.6rem 0; }
+  .prose .kicker { font-weight: 600; }
+  .prose table { width: 100%; border-collapse: collapse; margin: 1.6rem 0; font-size: 0.93rem;
+    font-family: var(--font-mono); }
+  .prose th, .prose td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); }
+  .prose th { color: var(--ink-muted); font-weight: 500; }
+  .prose td.num { text-align: right; }
+  .prose td.drop { color: var(--ink-muted); }
+  .prose tr.total td { border-top: 1px solid var(--line); border-bottom: none; font-weight: 600; }
+  .prose .win { color: var(--pine); font-weight: 600; }
+
+  .receipt { margin: 1.8rem 0; padding: 1.15rem 1.35rem; border: 1px solid var(--line);
+    border-radius: var(--radius); background: var(--ink); color: var(--paper);
+    font-family: var(--font-mono); font-size: 0.86rem; line-height: 1.6; overflow-x: auto; }
+  .receipt .r-dim { color: color-mix(in srgb, var(--paper) 55%, transparent); }
+  .receipt .r-hi { color: #e8c06a; font-weight: 500; }
+
+  .endcap { margin: 2.6rem 0 0; padding: 1.4rem 1.6rem; border: 1px solid var(--line);
+    border-radius: var(--radius); background: var(--paper-raised); }
+  .endcap p { margin: 0 0 0.9rem; font-size: 0.98rem; color: var(--ink-muted); }
+  .article__foot { max-width: 680px; margin: 0 auto; padding: 2rem 1.5rem 4rem;
+    display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+  .article__foot .pv-label { margin: 0; }
+</style>
+</head>
+<body>
+
+  <nav class="nav">
+    <div class="nav__in">
+      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+      <a class="nav__back" href="/writing/">← writing</a>
+    </div>
+  </nav>
+
+  <article class="article">
+    <header class="article__meta">
+      <p class="pv-label">Devlog · 2026 · <span class="pv-cite">promptprint</span></p>
+      <h1 class="article__title">i ran my prompt-analysis tool on my own logs. 82% of my "questions" weren't me.</h1>
+    </header>
+
+    <div class="prose">
+      <p>
+        i built a small tool called <strong>promptprint</strong> to answer one question about myself: is
+        my <em>questioning</em> getting sharper over time? not my code — the way i direct the agent. it
+        reads your Claude Code / Codex logs 100% locally and ends with what to fix next, not a vanity
+        number. then i did the thing every honest tool should have to survive: i pointed it at my own logs.
+      </p>
+      <p>
+        the first pass told me i'd asked about <strong>28,000 questions</strong>. flattering. and wrong.
+      </p>
+
+      <h2>most of the log wasn't me</h2>
+      <p>
+        in an automation-heavy setup — subagents, a memory plugin, eval and RAG apps that replay the same
+        system block over and over — most of what a log <em>calls</em> a prompt was never typed by a human.
+        it's a subagent's turn, an injected context header, the same 16,000-character block pasted five
+        times. when i filtered that out, this is what was left:
+      </p>
+      <table>
+        <thead><tr><th>the scan</th><th>blocks</th></tr></thead>
+        <tbody>
+          <tr><td>raw blocks scanned</td><td class="num">27,908</td></tr>
+          <tr><td class="drop">— memory / context injection</td><td class="num drop">19,151</td></tr>
+          <tr><td class="drop">— subagent turns</td><td class="num drop">3,155</td></tr>
+          <tr><td class="drop">— repeated / duplicate</td><td class="num drop">572</td></tr>
+          <tr class="total"><td>actual human questions</td><td class="num win">5,030</td></tr>
+        </tbody>
+      </table>
+      <p>
+        <strong>82% of it wasn't me.</strong> every "growth metric" i'd been reading was inflated about
+        five-fold by traffic i never wrote. a tool built to measure my judgment was mostly measuring my
+        machines.
+      </p>
+
+      <h2>the tempting move, and the one i took</h2>
+      <p>
+        the easy fix is to quietly filter the noise and report the clean number. it looks better and
+        nobody checks. i did the opposite: i made the tool <em>show its work</em>. every run now prints a
+        trust receipt before anything else —
+      </p>
+      <div class="receipt">
+        <span class="r-dim">trust receipt:</span> scanned <span class="r-hi">27,908</span> blocks
+        · <span class="r-hi">82%</span> machine/injection excluded<br />
+        <span class="r-dim">&nbsp;&nbsp;(subagent 3,155 · injection 19,151 · repeat 131)</span>
+        → <span class="r-hi">5,030</span> human questions
+      </div>
+      <p>
+        the receipt isn't decoration. it's the <em>denominator</em> — the "out of how many" that every
+        percentage hides. a growth number without its denominator is just a vibe. this one hands you the
+        denominator up front, so you can decide whether to trust the rest. that's the entire brand of the
+        tool: it would rather be auditable than impressive.
+      </p>
+
+      <h2>it's still not clean, and i'm saying so</h2>
+      <p>
+        here's the part i'm not hiding. cutting 82% doesn't make the remaining 18% pristine. the top
+        "repeated tasks worth turning into a skill" that the tool surfaced after filtering were still
+        generic tokens — <code>text</code>, <code>change</code>, <code>json</code> — each averaging
+        <strong>14,000 to 18,000 characters</strong>. those aren't questions. they're machine residue that
+        slipped through the filter.
+      </p>
+      <p>
+        so the receipt discloses a <em>ratio</em>, not a promise of perfect classification. "82% excluded"
+        is an honest disclosure of an environment-dependent estimate — not a claim that the other 18% is
+        spotless. i'd rather ship the real limit than a rounded-up story. <span class="kicker">honest beats
+        clean.</span>
+      </p>
+
+      <h2>with the noise gone, the real signal showed up</h2>
+      <p>
+        once the denominator was actual questions, the trend i was hoping to see was finally legible —
+        and small enough to state without exaggeration. measured as a share of my own messages, not raw
+        counts (raw counts reward writing more, not asking better):
+      </p>
+      <table>
+        <thead><tr><th>as a share of my messages</th><th>before</th><th>now</th></tr></thead>
+        <tbody>
+          <tr><td>verification questions</td><td class="num">4%</td><td class="num win">11%</td></tr>
+          <tr><td>counter-questions</td><td class="num">2%</td><td class="num win">7%</td></tr>
+          <tr><td>critique / push-back</td><td class="num">2%</td><td class="num">2%</td></tr>
+        </tbody>
+      </table>
+      <p>
+        more of my prompts now ask the agent to check itself or push back on my framing; the raw volume of
+        my questions actually <em>fell</em> per session. that's the direction i wanted — fewer, sharper —
+        but i only trust it because the noise it's measured against is disclosed, not swept away.
+      </p>
+
+      <h2>why i'm writing this down</h2>
+      <p>
+        the interesting artifact here isn't the tool. it's the failure i caught by turning the tool on
+        myself, and the choice of what to do with it: report the ratio, keep the residue visible, let the
+        reader audit the denominator. it runs fully offline — no log leaves your machine — and the
+        intermediate files that hold your real questions are never committed.
+      </p>
+      <p>
+        i'm not going to tell you to adopt it yet; the 18% still needs work, and i'd rather earn that with
+        a cleaner filter than a louder pitch. this is the discovery, in the open, receipts and all.
+        <span class="kicker">a metric you can't audit is just a vibe — so here's the denominator.</span>
+      </p>
+
+      <div class="endcap">
+        <p>the code, the adapter that filters machine traffic, and the receipt:</p>
+        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/promptprint">github.com/shryu1994/promptprint →</a>
+      </div>
+    </div>
+  </article>
+
+  <div class="article__foot">
+    <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
+    <p class="pv-label">show the denominator, or don't show the number</p>
+  </div>
+
+</body>
+</html>
