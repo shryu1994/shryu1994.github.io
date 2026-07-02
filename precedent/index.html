@@ -3,46 +3,40 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>precedent-or-refuse — 광고 문구 → 처분 선례 인용 or "선례 없음"</title>
-<meta name="description" content="한국 규제광고(건기식·화장품) 문구를 과거 식약처 행정처분 '선례'에 대조해, 근거와 함께 보여주거나 유사 선례가 없으면 정직하게 '선례 없음'으로 거부합니다." />
+<title>화장품 광고문구 리스크 체크 — 근거 인용 or "사람 검토"</title>
+<meta name="description" content="화장품 광고 카피를 붙여넣으면, 식약처 표시·광고 관리지침과 실제 적발 선례에 대조해 위험 표현을 금지/실증필요/주의로 표시하고 근거·법조문·출처를 인용합니다. 판정을 단정하지 않고 사람 검토를 보조합니다." />
 
-<!-- Provenance design system fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 
 <style>
-  /* ── Provenance design system v0.1 (inlined, self-contained) ── */
-  :root {
+  :root{
     --paper:#F3EFE6; --paper-raised:#FAF7F0; --paper-sunken:#EAE3D4;
     --ink:#1B1A17; --ink-muted:#585245; --ink-faint:#8C8678;
     --line:#DDD6C6; --line-strong:#C8C0AD;
     --pine:#1F4D3F; --pine-bright:#2F6B57; --pine-wash:rgba(31,77,63,0.06);
-    --ochre:#B26A1E; --ochre-wash:rgba(178,106,30,0.10);
-    --crimson:#9B2C2C; --crimson-wash:rgba(155,44,44,0.07);
-    --font-display:"Newsreader",Georgia,"Times New Roman",serif;
-    --font-sans:"Pretendard","Hanken Grotesk",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
-    --font-mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
-    --step-0:1rem; --step-1:1.1875rem; --step-2:1.5rem; --step-3:2rem;
-    --step-4:clamp(2.1rem,1.5rem+3vw,3.4rem);
-    --measure:62ch; --radius:10px; --radius-sm:6px;
+    --ochre:#B26A1E; --ochre-wash:rgba(178,106,30,0.12);
+    --crimson:#9B2C2C; --crimson-wash:rgba(155,44,44,0.09);
+    --blue:#2B5578; --blue-wash:rgba(43,85,120,0.09);
+    --font-display:"Newsreader",Georgia,serif;
+    --font-sans:"Pretendard",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+    --font-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --step-0:1rem; --step-1:1.1875rem; --step-4:clamp(2rem,1.4rem+3vw,3rem);
+    --measure:64ch; --radius:10px; --radius-sm:6px;
     --shadow-paper:0 1px 0 var(--line),0 14px 34px -22px rgba(40,30,10,0.35);
     --ease:cubic-bezier(0.22,0.61,0.36,1);
   }
   *,*::before,*::after{box-sizing:border-box;}
-  html{-webkit-text-size-adjust:100%;scroll-behavior:smooth;}
+  html{-webkit-text-size-adjust:100%;}
   body{margin:0;background:var(--paper);color:var(--ink);
     font-family:var(--font-sans);font-size:var(--step-0);line-height:1.65;
     -webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-  ::selection{background:var(--pine);color:var(--paper-raised);}
-  a{color:inherit;}
-  :focus-visible{outline:2px solid var(--pine);outline-offset:3px;border-radius:3px;}
+  a{color:var(--pine);}
+  .shell{max-width:820px;margin:0 auto;padding:0 1.5rem;}
 
-  .shell{max-width:780px;margin:0 auto;padding:0 1.5rem;}
-
-  /* header */
-  header.hero{position:relative;padding:clamp(3rem,7vw,5.5rem) 0 2rem;overflow:hidden;}
+  header.hero{position:relative;padding:clamp(2.6rem,6vw,4.5rem) 0 1.6rem;overflow:hidden;}
   .pv-grid{position:absolute;inset:0;z-index:-1;pointer-events:none;
     background-image:linear-gradient(to right,var(--line) 1px,transparent 1px),
       linear-gradient(to bottom,var(--line) 1px,transparent 1px);
@@ -52,72 +46,85 @@
     opacity:0.5;}
   .pv-label{font-family:var(--font-mono);font-size:0.6875rem;font-weight:500;
     letter-spacing:0.22em;text-transform:uppercase;color:var(--ink-muted);
-    display:inline-flex;align-items:center;gap:0.6em;margin:0 0 1.1rem;}
-  .pv-label::before{content:"";width:6px;height:6px;background:var(--pine);border-radius:50%;flex:none;}
+    display:inline-flex;align-items:center;gap:0.6em;margin:0 0 1rem;}
+  .pv-label::before{content:"";width:6px;height:6px;background:var(--pine);border-radius:50%;}
   .pv-display{font-family:var(--font-display);font-weight:500;font-size:var(--step-4);
-    line-height:1.08;letter-spacing:-0.015em;margin:0 0 1rem;}
+    line-height:1.1;letter-spacing:-0.015em;margin:0 0 0.9rem;}
   .pv-display em{font-style:italic;color:var(--pine);}
   .pv-lede{font-size:var(--step-1);line-height:1.55;color:var(--ink-muted);max-width:var(--measure);margin:0;}
 
-  /* console */
-  .console{margin:2.4rem 0 0;}
+  .console{margin:2rem 0 0;}
   .console label{font-family:var(--font-mono);font-size:0.6875rem;letter-spacing:0.18em;
     text-transform:uppercase;color:var(--ink-faint);display:block;margin-bottom:0.6rem;}
-  textarea{width:100%;min-height:84px;resize:vertical;
-    font-family:var(--font-sans);font-size:1.05rem;line-height:1.5;color:var(--ink);
+  textarea{width:100%;min-height:130px;resize:vertical;
+    font-family:var(--font-sans);font-size:1.03rem;line-height:1.6;color:var(--ink);
     background:var(--paper-raised);border:1px solid var(--line-strong);border-radius:var(--radius);
     padding:0.95rem 1.05rem;box-shadow:var(--shadow-paper);transition:border-color 0.2s var(--ease);}
   textarea:focus{outline:none;border-color:var(--pine);}
   .row{display:flex;flex-wrap:wrap;gap:0.7rem;align-items:center;margin-top:0.9rem;}
-  .pv-btn{font-family:var(--font-mono);font-size:0.8125rem;letter-spacing:0.01em;cursor:pointer;
+  .pv-btn{font-family:var(--font-mono);font-size:0.8125rem;cursor:pointer;
     color:var(--paper-raised);border:1px solid var(--pine);border-radius:var(--radius-sm);
-    padding:0.62em 1.2em;background:var(--pine);transition:background 0.2s var(--ease),border-color 0.2s var(--ease);}
-  .pv-btn:hover{background:var(--pine-bright);border-color:var(--pine-bright);}
-  .examples{margin-top:1.3rem;}
+    padding:0.62em 1.3em;background:var(--pine);transition:background 0.2s var(--ease);}
+  .pv-btn:hover{background:var(--pine-bright);}
+  #corpus-note{font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-faint);}
+  .examples{margin-top:1.2rem;}
   .examples .cap{font-family:var(--font-mono);font-size:0.6875rem;letter-spacing:0.1em;
     text-transform:uppercase;color:var(--ink-faint);margin-bottom:0.55rem;}
-  .chip{font-family:var(--font-sans);font-size:0.85rem;cursor:pointer;color:var(--ink-muted);
-    border:1px solid var(--line-strong);border-radius:999px;padding:0.32em 0.85em;background:transparent;
+  .chip{font-family:var(--font-sans);font-size:0.83rem;cursor:pointer;color:var(--ink-muted);
+    border:1px solid var(--line-strong);border-radius:999px;padding:0.34em 0.85em;background:transparent;
     margin:0 0.45rem 0.45rem 0;transition:border-color 0.18s var(--ease),color 0.18s var(--ease);}
   .chip:hover{border-color:var(--pine);color:var(--pine);}
 
-  /* verdict */
-  .verdict{margin:2.2rem 0 0;min-height:1px;}
-  .vhead{font-family:var(--font-mono);font-size:0.75rem;letter-spacing:0.06em;
-    display:inline-flex;align-items:center;gap:0.55em;padding:0.4em 0.85em;border-radius:999px;}
-  .vhead.match{background:var(--crimson-wash);color:var(--crimson);border:1px solid color-mix(in srgb,var(--crimson) 30%,transparent);}
-  .vhead.refuse{background:var(--pine-wash);color:var(--pine);border:1px solid color-mix(in srgb,var(--pine) 28%,transparent);}
-  .vmsg{margin:0.9rem 0 0;color:var(--ink-muted);font-size:0.97rem;max-width:var(--measure);}
+  /* highlighted copy panel */
+  .hlpanel{margin:1.8rem 0 0;white-space:pre-wrap;word-break:break-word;
+    background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);
+    padding:1.1rem 1.2rem;font-size:1.02rem;line-height:1.9;min-height:1px;}
+  .hlpanel:empty{display:none;}
+  mark.hl{border-radius:4px;padding:0.05em 0.18em;font-weight:500;color:var(--ink);
+    box-decoration-break:clone;-webkit-box-decoration-break:clone;cursor:help;}
+  mark.s-pro{background:var(--crimson-wash);box-shadow:inset 0 -2px 0 var(--crimson);}
+  mark.s-sub{background:var(--ochre-wash);box-shadow:inset 0 -2px 0 var(--ochre);}
+  mark.s-cau{background:var(--blue-wash);box-shadow:inset 0 -2px 0 var(--blue);}
 
-  .pcard{background:var(--paper-raised);border:1px solid var(--line);border-radius:var(--radius);
-    padding:1.25rem 1.35rem;margin-top:1rem;position:relative;}
-  .pcard__top{display:flex;flex-wrap:wrap;gap:0.55rem;align-items:center;margin-bottom:0.7rem;}
-  .pv-tag{font-family:var(--font-mono);font-size:0.6875rem;letter-spacing:0.02em;color:var(--ink-muted);
-    border:1px solid var(--line-strong);border-radius:999px;padding:0.2em 0.7em;background:transparent;white-space:nowrap;}
-  .score{font-family:var(--font-mono);font-size:0.6875rem;color:#8A4F12;background:var(--ochre-wash);
-    border:1px solid color-mix(in srgb,var(--ochre) 35%,transparent);border-radius:4px;padding:0.1em 0.5em;margin-left:auto;}
-  .quote{font-family:var(--font-display);font-size:1.3rem;line-height:1.35;color:var(--ink);margin:0 0 0.9rem;}
-  .quote::before{content:"“";}.quote::after{content:"”";}
-  .meta{display:grid;grid-template-columns:auto 1fr;gap:0.35rem 0.9rem;font-size:0.9rem;}
-  .meta dt{font-family:var(--font-mono);font-size:0.6875rem;letter-spacing:0.08em;text-transform:uppercase;
-    color:var(--ink-faint);padding-top:0.18em;white-space:nowrap;}
+  .summary{margin:1.6rem 0 0.4rem;font-size:0.97rem;color:var(--ink-muted);}
+  .summary strong{color:var(--ink);}
+  .summary .disclaim{color:var(--ink-faint);font-size:0.88rem;}
+
+  .vbadge{font-family:var(--font-mono);font-size:0.7rem;letter-spacing:0.02em;
+    padding:0.28em 0.7em;border-radius:999px;white-space:nowrap;display:inline-block;}
+  .vbadge.s-pro{background:var(--crimson-wash);color:var(--crimson);border:1px solid color-mix(in srgb,var(--crimson) 32%,transparent);}
+  .vbadge.s-sub{background:var(--ochre-wash);color:#8A4F12;border:1px solid color-mix(in srgb,var(--ochre) 38%,transparent);}
+  .vbadge.s-cau{background:var(--blue-wash);color:var(--blue);border:1px solid color-mix(in srgb,var(--blue) 32%,transparent);}
+  .vbadge.s-ok{background:var(--pine-wash);color:var(--pine);border:1px solid color-mix(in srgb,var(--pine) 30%,transparent);}
+
+  .verdict-empty{margin:1.8rem 0 0;}
+  .verdict-empty .vmsg{margin:0.8rem 0 0;color:var(--ink-muted);font-size:0.97rem;max-width:var(--measure);}
+
+  .cards{margin:1rem 0 0;}
+  .pcard{background:var(--paper-raised);border:1px solid var(--line);border-left:3px solid var(--line-strong);
+    border-radius:var(--radius);padding:1.1rem 1.25rem;margin-top:0.9rem;}
+  .pcard.s-pro{border-left-color:var(--crimson);}
+  .pcard.s-sub{border-left-color:var(--ochre);}
+  .pcard.s-cau{border-left-color:var(--blue);}
+  .pcard__top{display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;margin-bottom:0.6rem;}
+  .pv-tag{font-family:var(--font-mono);font-size:0.6875rem;color:var(--ink-muted);
+    border:1px solid var(--line-strong);border-radius:999px;padding:0.2em 0.7em;white-space:nowrap;}
+  .quote{font-family:var(--font-display);font-size:1.2rem;line-height:1.35;color:var(--ink);margin:0 0 0.5rem;}
+  .matched{font-size:0.9rem;color:var(--crimson);margin:0 0 0.7rem;}
+  .matched.s-sub{color:#8A4F12;} .matched.s-cau{color:var(--blue);}
+  .meta{display:grid;grid-template-columns:auto 1fr;gap:0.35rem 0.9rem;font-size:0.9rem;margin:0;}
+  .meta dt{font-family:var(--font-mono);font-size:0.66rem;letter-spacing:0.06em;text-transform:uppercase;
+    color:var(--ink-faint);padding-top:0.2em;white-space:nowrap;}
   .meta dd{margin:0;color:var(--ink-muted);}
-  .meta dd a{color:var(--pine);text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--pine) 30%,transparent);}
-  .meta dd a:hover{border-bottom-color:var(--pine);}
+  .meta dd a{white-space:nowrap;}
 
-  /* footer */
-  hr.pv-rule{height:1px;background:var(--line);border:0;margin:3rem 0 1.6rem;}
+  hr.pv-rule{height:1px;background:var(--line);border:0;margin:2.6rem 0 1.4rem;}
   footer{padding-bottom:4rem;color:var(--ink-faint);font-size:0.85rem;line-height:1.6;}
   footer .caveat{background:var(--paper-sunken);border-left:3px solid var(--ochre);
-    border-radius:var(--radius-sm);padding:0.9rem 1.1rem;margin:0 0 1.3rem;color:var(--ink-muted);}
+    border-radius:var(--radius-sm);padding:0.9rem 1.1rem;margin:0 0 1.2rem;color:var(--ink-muted);}
+  footer .legend{display:flex;flex-wrap:wrap;gap:0.6rem 1.2rem;margin:0 0 1.1rem;}
   footer code{font-family:var(--font-mono);font-size:0.85em;background:var(--paper-raised);
     border:1px solid var(--line);border-radius:4px;padding:0.05em 0.35em;}
-  footer a{color:var(--pine);}
-
-  @media (prefers-reduced-motion: no-preference){
-    .rise{opacity:0;transform:translateY(12px);animation:rise 0.6s var(--ease) forwards;}
-    @keyframes rise{to{opacity:1;transform:none;}}
-  }
 </style>
 </head>
 <body>
@@ -125,177 +132,204 @@
 <header class="hero">
   <div class="pv-grid" aria-hidden="true"></div>
   <div class="shell">
-    <p class="pv-label rise">precedent · or · refuse</p>
-    <h1 class="pv-display rise" style="animation-delay:.05s">
-      이 광고 문구, <em>처분 선례</em>가<br />이미 답을 줄지도 모른다.
+    <p class="pv-label">화장품 광고문구 · 리스크 체크</p>
+    <h1 class="pv-display">
+      이 광고 카피, <em>어디가 걸릴지</em><br />붙여넣으면 근거와 함께 짚어드립니다.
     </h1>
-    <p class="pv-lede rise" style="animation-delay:.12s">
-      건기식·화장품 광고 문구를 식약처가 <strong>실제로 적발한 표현</strong>에 대조합니다.
-      유사 선례가 있으면 <strong>근거·법령·출처와 함께 인용</strong>하고, 없으면 지어내지 않고
-      <strong>“선례 없음”으로 정직하게 거부</strong>합니다.
+    <p class="pv-lede">
+      화장품 광고 문구를 <strong>식약처 표시·광고 관리지침</strong>과 <strong>실제 적발 선례</strong>에 대조합니다.
+      위험 표현을 <strong>금지 · 실증/심사 필요 · 주의</strong>로 표시하고 근거 법조문·출처를 인용하며,
+      판정을 <strong>단정하지 않고</strong> 사람(QA·RA) 검토를 보조합니다.
     </p>
 
-    <div class="console rise" style="animation-delay:.18s">
-      <label for="q">검사할 광고 문구</label>
-      <textarea id="q" placeholder="예) 이 제품은 면역력을 높여 감기를 예방합니다"></textarea>
+    <div class="console">
+      <label for="q">검사할 광고 카피 (통째로 붙여넣기)</label>
+      <textarea id="q" placeholder="예) 줄기세포 엑소좀으로 피부 재생을 촉진하고, 아토피와 여드름을 개선하는 병원전용 크림입니다. 미백·주름개선 효과, 부작용이 전혀 없습니다."></textarea>
       <div class="row">
-        <button class="pv-btn" id="go">선례 조회 →</button>
-        <span id="corpus-note" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--ink-faint);"></span>
+        <button class="pv-btn" id="go">위험표현 검사 →</button>
+        <span id="corpus-note"></span>
       </div>
-
       <div class="examples">
         <div class="cap">예시 (클릭)</div>
         <div id="chips"></div>
       </div>
     </div>
 
-    <div class="verdict" id="verdict" aria-live="polite"></div>
+    <div class="hlpanel" id="hl" aria-hidden="true"></div>
+    <div id="verdict" aria-live="polite"></div>
+    <div class="cards" id="cards"></div>
   </div>
 </header>
 
 <div class="shell">
   <hr class="pv-rule" />
   <footer>
+    <div class="legend">
+      <span class="vbadge s-pro">금지</span>
+      <span class="vbadge s-sub">실증·심사 필요</span>
+      <span class="vbadge s-cau">주의 — 사람 검토</span>
+    </div>
     <p class="caveat">
-      ⚠️ 이 데모의 코퍼스는 식약처 <strong>부당광고 적발 보도/사례</strong>에서 인용한 대표 표현입니다(전부 출처 URL 동반).
-      합법/위법을 <strong>단정하지 않으며</strong>, 선례를 제시해 사람 판단을 보조합니다. 실제 검토 전 원문 처분공고 대조를 권장합니다.
+      ⚠️ 이 도구는 <strong>합법/위법을 단정하지 않습니다.</strong> 알려진 규정·선례를 대조해 위험 지점을 근거와 함께 보여줄 뿐,
+      최종 판단은 <strong>자율심의·전문가(RA) 검토</strong>가 필요합니다. 특히 <strong>기능성화장품 심사·보고 여부</strong>와
+      <strong>실증 자료 보유 여부</strong>에 따라 같은 표현도 합법일 수 있습니다(그래서 "실증 필요"·"주의"로 표시). 위험표현이 없다고 표시돼도
+      <strong>"안전 인증"이 아닙니다.</strong>
     </p>
     <p>
-      엔진 계약은 <a href="https://github.com/shryu1994/cite-or-refuse" target="_blank" rel="noopener">cite-or-refuse</a>와 같습니다 —
-      <em>거부는 버그가 아니라 1급 출력</em>. 검색은 설치·API 키 없이 도는 결정적 문자 bigram 겹침계수이며,
-      이 페이지의 판정은 <code>precedent_or_refuse</code> 파이썬 엔진과 동일한 임계값(0.30)·계약을 미러링합니다.
+      코퍼스는 <strong>식약처 「화장품 표시·광고 관리 지침」(별표1·별표2)·화장품법 제13·14조·대한화장품협회 해설서·식약처 부당광고 적발 보도</strong>에서
+      1차 출처로 확인한 <span id="count-note"></span>개 규정·선례입니다(각 항목 출처 링크 동반).
+      설계 철학은 <a href="https://github.com/shryu1994/cite-or-refuse" target="_blank" rel="noopener">cite-or-refuse</a> —
+      <em>근거 없으면 지어내지 않고 "사람 검토"로 넘긴다.</em>
     </p>
   </footer>
 </div>
 
+<!--CORPUS:START--><script type="application/json" id="corpus">[{"id": "med-atopy", "category": "의약품 오인", "expression": "아토피 / 아토피 완화·개선·예방·치료", "match_keywords": ["아토피"], "status": "prohibited", "basis": "화장품법 제13조제1항제1호(의약품 오인) + 식약처 화장품 광고자문 기준 및 해설서(2023, KCIA). 아토피는 피부 질환명으로, 완화·개선·예방·치료 어느 방향이든 의약품 효능 표방=금지. 실증·기능성으로도 구제 불가.", "note": "질병명 자체를 광고에 쓰면 안 됨. 대체: '피부에 수분을 공급하여 건조함 완화', '보습을 통해 피부건조에 기인한 가려움의 일시적 완화에 도움'.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "med-acne", "category": "의약품 오인", "expression": "여드름 치료 / 여드름 개선 / 여드름 제거 / 여드름 예방 / 여드름균 사멸", "match_keywords": ["여드름 치료", "여드름 개선", "여드름 제거", "여드름 예방", "여드름균", "여드름 완화", "뾰루지 개선", "여드름 흔적 제거"], "status": "prohibited", "basis": "화장품법 제13조제1항제1호 + KCIA 해설서(2023) p.20: 여드름을 치유·치료·제거·개선·예방하거나 여드름균을 사멸시키는 표현은 의약품 효능이므로 불가.", "note": "안전지대는 별도 항목(acne-suit)으로 분리. '치료/개선/제거/예방/완화'는 금지, '여드름성 피부 관리/케어/적합'은 조건부 가능.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "acne-suit", "category": "기능성 오인", "expression": "여드름성 피부 완화에 도움(기능성) / 여드름성 피부 사용에 적합(실증)", "match_keywords": ["여드름성 피부 완화", "여드름성 피부 사용에 적합", "여드름성 피부에 적합"], "status": "needs_substantiation", "basis": "화장품법 시행규칙 제2조: '여드름성 피부를 완화하는 데 도움'은 인체세정용 제품류에 한정된 기능성화장품(살리실산 0.5%↑ 등, 심사·보고)에서만 가능. '여드름성 피부 사용에 적합'은 일반화장품도 인체적용시험(논코메도제닉 등) 실증 시 가능하나 '상태가 개선된다'는 의미로 쓰면 안 됨.", "note": "'완화에 도움'=기능성 심사(인체세정용) 필요, '사용에 적합'=일반화장품 실증 가능. 상태 개선·치료 뉘앙스는 금지(med-acne로 격상).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-inflammation", "category": "의약품 오인", "expression": "항염 / 소염(작용) / 염증 완화·억제·개선 / 진통", "match_keywords": ["항염", "소염작용", "소염 작용", "염증 완화", "염증완화", "염증 억제", "염증 개선", "진통"], "status": "prohibited", "basis": "화장품법 제13조제1항제1호 + KCIA 해설서(2023) '항염효과·진통효과가 있다'=금지 예시(원료 설명에서도 금지). 식약처 2025.8.6 온라인 부당광고 83건 적발 중 '소염작용','염증완화에 도움'이 실제 적발 문구(의약품 오인 53건).", "note": "'염증' 단독은 부정문맥('염증 걱정 없이') 오탐 위험이라 효능주장 구절로 매칭. '피부 진정/편안하게'는 자극 완화 의미 한정 가능.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "med-regen", "category": "의약품 오인", "expression": "피부 재생 / 세포 재생 / 재생인자 / 리제너레이션", "match_keywords": ["피부 재생", "피부재생", "세포 재생", "세포재생", "재생인자", "리제너레이션", "regeneration"], "status": "prohibited", "basis": "식약처 「화장품 표시·광고 관리 지침」(2025.8.14) [별표1] '생리활성 관련' 금지표현에 '피부재생, 세포 재생' 명시. 화장품법 제13조제1항제1호. 2025.8.6 식약처 적발 실제 문구(피부(세포)재생).", "note": "단독 '재생'(재생크림 등)은 과매칭이라 '피부/세포 재생' 구절로만 매칭. 대체: '피부 턴오버 주기 관리·유지', '피부장벽 손상 개선에 도움'(실증 시).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-cell-active", "category": "의약품 오인", "expression": "세포 성장 촉진 / 세포 활력 증가 / 세포·유전자(DNA) 활성화", "match_keywords": ["세포 성장", "세포 활력", "세포 활성", "DNA 활성", "유전자 활성"], "status": "prohibited", "basis": "KCIA 해설서(2023) '세포를 재생·성장 촉진·활력 증가시킨다, 세포/유전자(DNA)를 활성화'=광고 불가(원료 설명 포함). 화장품법 제13조제1항제1호. [별표2] 실증대상에도 없어 실증 불가.", "note": "세포 문구가 빠진 In Vitro 시험 명칭·결과 인용만 예외적 가능. 콜라겐/효소 활성화는 별도 항목(collagen).", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "collagen", "category": "과장/실증필요", "expression": "콜라겐 증가·감소·활성화 / 효소 증가·감소·활성화", "match_keywords": ["콜라겐 증가", "콜라겐 활성", "콜라겐을 증가", "효소 증가", "효소 활성"], "status": "needs_substantiation", "basis": "식약처 지침 [별표1]은 '피부구성물질(효소·콜라겐)을 증가/감소/활성화'를 금지하되 '[별표2]1. 제외' 단서. [별표2]: 주름개선 기능성 심사자료 또는 별도 인체적용/인체외 실증 시 가능. 근거 없이 쓰면 부당광고.", "note": "단독 '콜라겐'은 성분표기라 무해→'콜라겐 증가/활성' 구절로만 매칭. 세포/유전자(DNA) 활성화는 실증 불가라 med-cell-active로 분리.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-hair-drug", "category": "의약품 오인", "expression": "발모 / 육모 / 양모 / 탈모 방지·예방·치료 / 모발 성장 촉진", "match_keywords": ["발모", "육모", "양모", "탈모 방지", "탈모방지", "탈모 예방", "탈모예방", "탈모 치료", "탈모치료", "모발 성장", "성장을 촉진", "모발 두께", "두께를 증가"], "status": "prohibited", "basis": "화장품법 제13조제1항제1호 + 식약처 지침 [별표1] 모발 표현: '발모·육모·양모','탈모방지·탈모치료','모발 성장 촉진·억제','모발 두께 증가' 금지. 식약처 적발 다수(2025.12 탈모 의약품오인 77건 등). '탈모 증상 완화'만 예외(별도 항목).", "note": "'방지·예방·치료·발모·육모·양모'는 기능성이어도 금지(완화만 허용). 안전: '두피/모발을 청결·건강하게 관리'.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "hairloss-relief", "category": "기능성 오인", "expression": "탈모 증상 완화에 도움 / 모발 손상 개선", "match_keywords": ["탈모 증상 완화", "탈모 완화", "탈모 케어", "모발 손상 개선", "모발의 손상"], "status": "needs_substantiation", "basis": "화장품법 시행규칙 제2조: '탈모 증상의 완화에 도움을 주는 화장품'은 정식 기능성화장품 범주로 심사·보고된 제품만 사용 가능. '모발 손상 개선'은 인체적용/인체외 시험 실증 시 일반화장품도 가능(KCIA 해설서 2023). 일반화장품 무단 표방은 금지.", "note": "'탈모 증상 완화'=탈모 기능성 심사 필요. '탈모 케어'는 caution 성격(강한 주장은 med-hair-drug로). 미보고 제품이면 '청결·건강 관리' 수준으로.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "eyelash-grow", "category": "의약품 오인", "expression": "속눈썹·눈썹이 자란다", "match_keywords": ["속눈썹이 자란", "눈썹이 자란"], "status": "prohibited", "basis": "식약처 지침 [별표1] 모발 표현: '속눈썹, 눈썹이 자란다'=발모 주장으로 금지(화장품법 제13조제1항제1호).", "note": "단독 '속눈썹'은 연출/케어/영양 등 합법 카피 오탐이라 '자란' 결합형으로만 매칭. 심사 기능성이면 확인 플래그.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "germ-kill", "category": "의약품 오인", "expression": "살균 / 소독", "match_keywords": ["살균", "소독"], "status": "prohibited", "basis": "식약처 지침 [별표1] '살균 소독'=금지표현. 균을 사멸시킨다는 의미로 화장품 범위 이탈(화장품법 제13조제1항제1호). 어떤 제품이든 불가.", "note": "'항균'과 반드시 분리. 항균은 조건부 실증 가능(antibacterial 항목)이나 살균·소독은 무조건 금지.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "antibacterial", "category": "기능성 오인", "expression": "항균 (인체세정용 제품에 한함)", "match_keywords": ["항균"], "status": "needs_substantiation", "basis": "식약처 지침 [별표2] '항균(인체세정용 제품)'=인체적용시험 자료로 입증 시 사용 가능(바디클렌저·액체비누 등). 화장품법 제14조 실증대상. [별표1] 비고: 트리클로산 등으로 '더 뛰어나다' 비교광고는 금지.", "note": "인체세정용이 아닌 제품(스킨·크림)에 '항균'은 불가. '더 뛰어난 항균' 비교는 금지. 살균·소독은 별도 금지.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-detox", "category": "의약품 오인", "expression": "디톡스 / detox / 해독 / 피부 독소 제거", "match_keywords": ["디톡스", "detox", "해독", "독소 제거", "독소를 제거"], "status": "prohibited", "basis": "식약처 지침 [별표1] '피부 독소를 제거한다(디톡스, detox)','해독'=금지(제13조제1항제1호). '체내 노폐물 제거'도 제4호로 금지. 단 '피부·모공 노폐물 제거'는 명시 예외(허용).", "note": "'독소/디톡스/해독'만 금지. 대체: '피부 노폐물 및 모공(속) 노폐물을 제거한다'는 허용.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-anticancer-immune", "category": "의약품 오인", "expression": "항암 / 항바이러스 / 항진균 / 면역 강화 / 항알레르기 / 활성산소 제거", "match_keywords": ["항암", "항바이러스", "항진균", "면역 강화", "면역력 강화", "항알레르기", "활성산소 제거"], "status": "prohibited", "basis": "식약처 지침 [별표1] '항진균 항바이러스','면역 강화, 항알레르기','항암'=의약품 오인 금지표현(제13조제1항제1호). 실증대상·예외 없음.", "note": "'면역' 단독은 과매칭이라 '면역 강화/력 강화'로 매칭. 항알레르기 테스트 완료(실증)는 별도(test-done).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-wound", "category": "의약품 오인", "expression": "상처·흉터 치료·회복·복구 / 반흔 제거", "match_keywords": ["상처를 치료", "흉터 치료", "흉터 제거", "반흔", "손상을 치료", "회복 또는 복구", "재생시킨다"], "status": "prohibited", "basis": "화장품법 시행규칙 별표5 + 식약처 지침: '상처·질병 손상을 치료·회복·복구','반흔 제거·완화'=의약품 오인 금지. 단 서울행정법원(2020)은 색조제품 '손상 회복에 도움을 준다'(간접)는 위반 아님으로 판결.", "note": "단정형 '치료/회복 또는 복구한다'는 금지, '~에 도움을 준다'는 needs_substantiation로 격하(판례). 단독 '치료/회복/복구'는 과매칭이라 손상·상처 문맥 결합 시만.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-circulation", "category": "의약품 오인", "expression": "혈액순환 / 호르몬 분비촉진", "match_keywords": ["혈액순환", "호르몬 분비", "호르몬 분비촉진"], "status": "prohibited", "basis": "식약처 지침 [별표1] '생리활성' 금지표현에 '혈액순환','호르몬 분비촉진 등 내분비 작용' 명시(제13조제1항제1호).", "note": "'피부 혈행 개선'은 별개(blood-flow, 실증 가능)이므로 '혈액순환'만 금지 매칭. '호르몬' 단독 과매칭 주의.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "blood-flow", "category": "과장/실증필요", "expression": "피부 혈행 개선", "match_keywords": ["피부 혈행", "혈행 개선"], "status": "needs_substantiation", "basis": "식약처 지침 [별표2] '피부 혈행 개선'=인체적용시험 자료로 입증 시 가능(화장품법 제14조). 실증방법 가이드라인 제7장(Laser Doppler 등).", "note": "'혈액순환'(금지)과 구분. '피부 혈행 개선'은 실증 시 허용.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-skindisease", "category": "의약품 오인", "expression": "건선 / 소양증 / 모낭충 / 임신선·튼살 / 홍조·홍반 개선·제거 / 기저귀 발진 / 무좀 / 소양(가려움) 완화", "match_keywords": ["건선", "소양증", "모낭충", "임신선", "튼살", "홍조", "홍반", "기저귀 발진", "무좀", "가려움 완화", "가려움 개선"], "status": "prohibited", "basis": "식약처 지침 [별표1]: 건선·소양증·모낭충·임신선·튼살·홍조·홍반 개선/제거·기저귀 발진 등 피부질환·증상 개선은 의약품 오인 금지(제13조제1항제1호). 무좀 치료는 실제 적발례(2025.12). 튼살은 관련 기능성 심사 범위 내만 예외.", "note": "'가려움 완화'는 '보습을 통해 피부건조에 기인한 가려움의 일시적 완화에 도움'의 제한적 프레이밍만 가능. 색조제품 '가려준다'는 홍조·홍반에 예외.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-cosmeceutical", "category": "의약품 오인", "expression": "메디슨 / 드럭 / 코스메슈티컬 / 치유", "match_keywords": ["메디슨", "medicine", "드럭", "코스메슈티컬", "cosmeceutical", "치유"], "status": "prohibited", "basis": "식약처 지침 [별표1] '기타': '메디슨(medicine), 드럭(drug), 코스메슈티컬, 치유 등을 사용한 의약품 오인 우려 표현' 금지(제13조제1항제1호).", "note": "'drug'는 영어 substring 오탐(drugstore 등) 위험이라 매칭 제외; 한글 '드럭'만 사용. 영어 표기도 동일 금지 판단.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "med-penetration", "category": "의약품 오인", "expression": "진피층 침투·도달 / 표피 관통 / 피부 속 주입 / 마이크로니들·MTS로 성분 직접 전달 / 의료시술 유사", "match_keywords": ["진피층", "표피를 관통", "피부 속 주입", "성분을 직접 전달", "성분 직접 전달", "의료시술", "근막"], "status": "prohibited", "basis": "식약처 2025.8.6 적발: '진피층 끝까지 침투','피부 내 성분 직접 전달','의료시술과 유사한 효능'=화장품 범위 초과/의약품 오인. 화장품은 각질층까지 작용(화장품법 제2조 '작용이 경미'). 마이크로니들 점검 2024.8(82건).", "note": "'마이크로니들·MTS·침투·흡수' 단독은 정당 원료·표층 흡수까지 오탐→'진피/표피 관통/직접 전달/주입' 결합 시만 금지. '피부에 부드럽게 흡수' 수준은 허용(caution).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "caution-absorb", "category": "의약품 오인", "expression": "피부 깊숙이 침투 / 흡수율 극대화 (문맥 의존)", "match_keywords": ["피부 깊숙이 침투", "흡수율 극대화", "깊숙이 침투"], "status": "caution", "basis": "식약처 국감자료(2021~2025)상 '침투/흡수율/주입' 문구가 MTS 기기 결합 맥락에서 적발되나, 표현 자체가 자동 위법은 아니고 의료기기·시술 암시 여부로 개별 판단. 진피 도달·주입은 med-penetration으로 격상.", "note": "사람 검토 플래그. '각질층 표층 흡수' 뉘앙스는 허용, '진피 도달·주입·기기 결합'은 금지(med-penetration).", "source_url": "https://www.cosinkorea.com/news/article.html?no=56201"}, {"id": "stemcell-exosome", "category": "소비자 오인·기만", "expression": "줄기세포 / stem cell / 엑소좀 / 인체 세포·조직 배양액 / 0억 세포", "match_keywords": ["줄기세포", "스템셀", "stem cell", "엑소좀", "exosome", "인체 세포 배양액", "인체 조직 배양액", "억 세포"], "status": "caution", "basis": "식약처 지침(2025.8.14) 제13조제1항제4호: 인체 유래로 오인되는 줄기세포·엑소좀·배양액 표현 금지. 단 예외 명시—식물·우유 엑소좀, 식물줄기세포 함유, 안전기준 별표3 적합 원료의 불특정인 배양액은 가능. '캘러스배양액'을 '줄기세포배양액'으로 표기 불가.", "note": "인체 유래 오인이면 금지, 유래(식물·우유) 명시하면 허용→caution(사람 검토). '식물줄기세포/식물 엑소좀/우유 엑소좀'은 화이트리스트로 오탐 방지 필수.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "func-whitening", "category": "기능성 오인", "expression": "미백 / 화이트닝 / 기미·주근깨 완화 (기능성 심사 여부에 따라)", "match_keywords": ["미백", "화이트닝", "whitening", "기미", "주근깨"], "status": "needs_substantiation", "basis": "화장품법 제13조제1항제2호 + 시행규칙 제2조: 미백은 기능성화장품 심사·보고 제품만 표방 가능. '기미·주근깨 완화에 도움'은 미백 기능성 심사자료로 입증. 미심사 일반화장품 사용 시 기능성 오인 금지. 무조건 prohibited로 올리면 등록 기능성 제품에 오탐(liability).", "note": "심사·보고 완료면 합법→needs_substantiation. 일반화장품은 '피부를 밝게(브라이트닝)/화사하게/맑게 케어'는 가능. '검버섯 완화'는 피부질환이라 의약품 오인으로 별도 금지. '즉시/즉각 미백'은 속효성 금지(absolute-instant).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "func-wrinkle", "category": "기능성 오인", "expression": "주름 개선 / 주름 완화 / 링클 / 안티링클 (기능성 심사 여부에 따라)", "match_keywords": ["주름 개선", "주름개선", "주름 완화", "링클", "wrinkle", "안티링클", "anti-wrinkle"], "status": "needs_substantiation", "basis": "화장품법 제13조제1항제2호 + 시행규칙 제2조: 주름개선 기능성화장품(심사·보고)만 '주름 개선/완화/안티링클' 가능. 미심사 일반화장품은 기능성 오인 금지. 심사 제품이면 합법이므로 무조건 금지 아님.", "note": "심사·보고 여부 확인 플래그. 일반화장품은 '피부에 탄력을 부여한다' 수준까지. '즉시 주름이 사라진다'는 속효성 금지(absolute-instant).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "func-uv", "category": "기능성 오인", "expression": "자외선 차단 / SPF / UV차단 (기능성 심사 여부에 따라)", "match_keywords": ["자외선 차단", "자외선차단", "UV차단", "SPF"], "status": "needs_substantiation", "basis": "화장품법 제13조제1항제2호 + 시행규칙 제2조: 자외선차단은 기능성화장품 심사·보고 대상. 미심사 제품이 SPF/UV차단 표방 시 금지. 심사 제품이면 합법.", "note": "심사·보고 여부 확인. 'SPF' substring은 표기 오탐 적으나 값 결합 권장.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "func-ingredient", "category": "기능성 오인", "expression": "미백 고시성분 함유 / 주름개선 원료 함유로 효능 암시 (기능성 미심사)", "match_keywords": ["미백 고시성분", "고시성분", "주름개선 효과가 있는", "효과가 있는 성분", "성분으로 기능성"], "status": "prohibited", "basis": "화장품법 제13조제1항제2호: 기능성 미심사 완제품에 '미백 고시성분 알부틴 함유','주름개선 효과 있는 OO 원료' 등 성분을 빌려 기능성 효과를 우회 암시하면 기능성 오인 금지. 심사 없으면 실증으로도 구제 불가.", "note": "기능성 등재 제품이 유효성분 역할 설명하는 경우는 적법→제품 기능성 등재 여부 맥락 확인. 단독 '원료/성분'은 과매칭이라 효능 결합구로만.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "med-diet", "category": "의약품 오인", "expression": "다이어트 / 체중감량 / 피하지방·지방 분해·연소 / 얼굴 크기 작아짐 / V라인 / 체형변화", "match_keywords": ["다이어트", "체중감량", "피하지방", "지방 분해", "지방 연소", "체형변화", "몸매개선", "얼굴 크기가 작아", "V라인"], "status": "prohibited", "basis": "식약처 지침 [별표1] 신체개선 표현 + 화장품법 제13조제1항제1호: 다이어트·체중감량·지방분해·연소·체형변화·얼굴 크기 감소·V라인 금지(식약처 다이어트·체지방 효능 인정 사실 없음, 적발 다수). '일시적 셀룰라이트 감소'만 실증 예외(cellulite).", "note": "색조제품 '연출한다'는 얼굴형에 예외. '일시적 셀룰라이트 감소'는 실증 시 가능(cellulite 항목).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "cellulite", "category": "과장/실증필요", "expression": "일시적 셀룰라이트 감소 / 붓기 완화 / 다크서클 완화 / 피지분비 조절", "match_keywords": ["셀룰라이트", "붓기 완화", "다크서클 완화", "피지분비 조절", "피지 분비 조절"], "status": "needs_substantiation", "basis": "식약처 지침 [별표2] + 실증 시험방법 가이드라인: '일시적 셀룰라이트 감소','붓기 완화','다크서클 완화','피부 피지분비 조절'=인체적용시험 자료로 입증 시 가능(화장품법 제14조). 실증 없으면 금지표현으로 취급.", "note": "'셀룰라이트'는 '일시적 감소' 실증 필요. '다이어트·지방분해·슬리밍'으로 넘어가면 금지(med-diet).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "skinbarrier", "category": "과장/실증필요", "expression": "피부장벽 손상 개선·강화에 도움", "match_keywords": ["피부장벽 손상", "피부장벽 개선", "피부장벽 강화", "피부장벽 손상의 개선"], "status": "needs_substantiation", "basis": "KCIA 해설서(2023): '피부장벽 손상의 개선에 도움','보습 등을 통한 피부장벽 강화'=인체적용시험 자료로 입증 시 가능. 무자격 '피부장벽 개선'은 근거 없이 쓰면 적발(자격어+실증 필요).", "note": "'피부장벽 기능 회복으로 가려움 개선'은 별도 기능성(심사) 영역이라 일반화장품 사용 시 기능성 오인 금지.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "antiaging", "category": "과장/실증필요", "expression": "안티에이징 / 항노화 / 항산화 / 퍼밍 / 피부노화 완화·징후 감소", "match_keywords": ["안티에이징", "항노화", "항산화", "피부노화", "피부 노화 완화", "노화 완화", "퍼밍", "firming"], "status": "needs_substantiation", "basis": "KCIA 해설서(2023) p.28 [별표2]: 안티에이징·항노화·항산화·퍼밍·피부노화 완화·징후 감소=인체적용/인체외 시험 자료로 입증 시 일반화장품도 가능(화장품법 제14조). 주름개선 기능성 심사자료로 갈음 가능.", "note": "실증 없이 쓰면 부당광고. '피부나이 n세 감소/-3살/10년 감소' 구체 회춘 수치는 별도 금지→'피부노화지수'로만.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "skin-age-number", "category": "소비자 오인·기만", "expression": "피부나이 n세 감소 / -3살 / 10년 어려진다 (구체 회춘 수치)", "match_keywords": ["피부나이", "피부 나이", "년 감소", "살 어려", "세 감소"], "status": "prohibited", "basis": "식약처 지침(민원인안내서) 신규 금지표현(2025.1 개정): '피부나이 n세 감소' 등 구체 수치 회춘 표현은 소비자 오인으로 금지. '안티에이징'(실증)과 달리 수치 회춘은 실증으로도 불가.", "note": "'피부나이' 단독은 '피부노화지수'식 대체표현과 구분 매칭. 실증 가능한 안티에이징(antiaging)과 다름.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "numeric-efficacy", "category": "과장/실증필요", "expression": "수분 30% 개선 / 피부톤 20% 개선 / 2주 경과 후 개선 등 수치·기간 효능", "match_keywords": ["% 개선", "수분감 30%", "피부결 20%", "2주 경과", "피부톤 개선", "개선효과"], "status": "needs_substantiation", "basis": "KCIA 해설서(2023) [별표2] + 화장품법 제14조: '수분감 30% 개선효과','피부결 20% 개선','2주 경과 후 피부톤 개선'=인체적용/인체외 시험 자료 필수. 인용 시 시험기관·대상·기간 명시 권장, '임상'은 '인체적용시험'으로 표기.", "note": "단독 '% 개선/피부결/수분감'은 과매칭이라 수치·기간 결합구로 매칭. 근거 없으면 과장광고.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "test-done", "category": "과장/실증필요", "expression": "피부과 테스트 완료 / 저자극·알레르기·하이포알러제닉 테스트 완료 / 시험검사기관 효과 입증", "match_keywords": ["피부과 테스트", "테스트 완료", "저자극 테스트", "알레르기 테스트", "하이포알러제닉", "시험검사기관", "효과 입증"], "status": "needs_substantiation", "basis": "식약처 지침 [별표2] + KCIA 해설서(2023): '테스트 완료','효과 입증'=인체적용/인체외 시험 자료로 입증 시 사용. '테스트했다'는 사실에 한하며 '저자극/무자극/무알레르기'로 효능 단정하면 안 됨.", "note": "'48시간/49시간 지속' 등 시간 수치 주장도 실증 필수. 실증 없이 '테스트 완료' 표기 시 적발.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "compare-ad", "category": "과장/실증필요", "expression": "OO보다 지속력 5배 / 타 제품 대비 우수 (비교광고)", "match_keywords": ["보다 지속력", "배 높음", "보다 5배", "타 제품", "타제품보다", "경쟁제품 대비", "보다 우수"], "status": "needs_substantiation", "basis": "화장품법 제14조 + 시행규칙 별표5 제2호 바목: 비교광고는 비교 대상·기준을 분명히 밝히고 객관적 인체적용/인체외 시험자료로 입증. 근거·기준 없으면 부당비교.", "note": "단독 '대비/배'는 무해 문맥(수분 함량) 오탐 주의→비교·우위 구절로 매칭.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "particulate-matter", "category": "과장/실증필요", "expression": "미세먼지 차단 / 미세먼지 흡착 방지", "match_keywords": ["미세먼지 차단", "미세먼지 흡착", "미세먼지 방지"], "status": "needs_substantiation", "basis": "화장품법 제14조 + 실증규정: 미세먼지 차단/흡착 방지는 인체적용시험 자료(미사용 대비 흡착량 유의 감소 입증)로 실증해야 함. 근거 없이 광고 시 부당광고(2017 적발례).", "note": "실증 자료 필요. 근거 없으면 과장.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "natural-organic", "category": "소비자 오인·기만", "expression": "천연화장품 / 100% 천연 / 유기농 / 오가닉 / natural·organic 인증", "match_keywords": ["천연화장품", "100% 천연", "100% 순수 천연", "유기농", "오가닉", "천연 인증", "유기농 인증"], "status": "needs_substantiation", "basis": "화장품법 제13조제1항제4호 + 시행규칙 별표5 + 제14조: 2025.8.1 정부 천연·유기농 인증제 폐지→대한화장품협회 안내서(ISO16128, 천연원료 95%↑·유기농 10%↑)+사업자 자체 실증으로 전환. 기준 미충족·무실증 사용 시 소비자 오인 금지. '100%'는 절대표현으로 추가 위험. 실제 적발(유로바이어 '100% 천연 인증'·'100% pure organic' 광고업무정지 3개월).", "note": "'천연' 단독은 '천연 성분 함유' 등 무해 표현 오탐 위험→'100% 천연/천연화장품/천연 인증' 등 인증·프레이밍 구절 매칭. 지수 표기 시 ISO16128 근거+오인방지 문구 병기.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "no-additive", "category": "소비자 오인·기만", "expression": "배합금지 원료 무첨가 (無스테로이드·無벤조피렌 등)", "match_keywords": ["무스테로이드", "무 스테로이드", "無 스테로이드", "무벤조피렌", "無 벤조피렌", "벤조피렌"], "status": "prohibited", "basis": "식약처 지침 [별표1] 제13조제1항제4호: 배합금지 원료(모든 화장품이 못 쓰는 원료)를 '무첨가/無/free'로 표시하면 해당 제품만 안 넣은 듯 오인시키는 기만. [별표2] 각주에서 배합금지 원료는 실증으로도 구제 불가로 못박음.", "note": "배합금지 원료 대상 무첨가만 절대 금지. 배합 가능한 성분의 '無OO'는 실증 시 가능(no-additive-generic).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "no-additive-generic", "category": "소비자 오인·기만", "expression": "무(無)OO / 무첨가 / free (배합 가능 성분 미함유)", "match_keywords": ["무첨가", "무 파라벤", "무 향료", "무 색소", "무 실리콘", "무함유", "불검출"], "status": "needs_substantiation", "basis": "화장품법 제14조 + 식약처 지침: 배합 가능한 특정성분의 '無OO/무첨가/free'는 시험분석자료로 미함유 입증 시 사용 가능. 제조관리기록서는 예외적 사정에서만 갈음.", "note": "단독 '無/free'는 영어·한자 substring 오탐 위험이라 성분 결합형으로 매칭. 배합금지 원료(스테로이드·벤조피렌) 무첨가는 실증 무관 금지(no-additive).", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "expert-recommend", "category": "소비자 오인·기만", "expression": "의사·병원·피부과 추천·개발 / 병원전용·피부과시술용·약국전용 / 의료기관 추천", "match_keywords": ["의사 추천", "의사가 개발", "의사 개발", "병원 추천", "병원에서 추천", "피부과 의사", "피부과 추천", "전문의 추천", "의료진 추천", "병원전용", "병원 전용", "병원용", "피부과전용", "피부과 전용", "피부과시술용", "약국전용", "약국 전용"], "status": "prohibited", "basis": "화장품법 시행규칙 별표5 제2호 다목: 의사·의료기관 등이 지정·공인·추천·지도·연구·개발·사용한다는 내용·암시 금지. 2025.1 지침 개정으로 '병원전용·피부과전용·약국전용', 의사·병원 사진·십자가 도안도 금지 명시. 2025.5 식약처 237건(전문가 추천류 91건) 적발.", "note": "대표자가 의사여도 '의사 개발' 불가. 'OO대학교와 공동개발'처럼 의료인·기관 미명시 사실 표현은 가능. 단독 '의사/병원/피부과'는 과매칭이라 추천·전용·개발 결합구로 매칭.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "false-certification", "category": "소비자 오인·기만", "expression": "식약처 인증받은 제품 / OO 협회 인증 / 허가받은 제품", "match_keywords": ["식약처 인증", "식약처 허가", "협회 인증", "인증을 받은 제품", "허가받은 제품"], "status": "caution", "basis": "화장품법 제13조제1항제4호 + KCIA 해설서: '식약처 허가·인증을 받은 제품','OO 아토피 협회 인증'은 소비자 기만(화장품은 개별 허가·인증 대상 아님). 단 기능성 심사필·천연/유기농 인증·정식 인증마크는 적법→사람 검토.", "note": "'허가' 단독은 과매칭이라 인증·허가 프레이밍으로 매칭. 기능성 심사·천연 인증은 예외.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "no-sideeffect", "category": "소비자 오인·기만", "expression": "부작용이 전혀 없다 / 먹을 수 있다 / 100% 안전", "match_keywords": ["부작용이 전혀 없", "부작용 없", "먹을 수 있", "100% 안전", "완전 안전"], "status": "prohibited", "basis": "식약처 지침 [별표1] 제13조제1항제4호: '부작용이 전혀 없다'=금지표현(효능 개인차 부정·안전성 단정). '먹을 수 있다'는 화장품 범위 이탈(제1호). '개인차가 있을 수 있음' 명시가 오히려 요구됨.", "note": "안전성 단정·보증 금지.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "clinical-word", "category": "소비자 오인·기만", "expression": "임상 (완료·검증)", "match_keywords": ["임상"], "status": "caution", "basis": "KCIA 해설서(2023) p.30: '임상'은 소비자 오인 우려 표현이므로 '인체적용시험'으로 명시 요망(전면 금지가 아니라 대체 요망).", "note": "'임상' 자체는 대체 권고 대상(caution). 시험 자료 있으면 '인체적용시험 완료'로 표기.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "procedure-mimic", "category": "소비자 오인·기만", "expression": "보톡스 / 필러 / 레이저 / 카복시 / 지방볼륨생성 (의료시술 오인)", "match_keywords": ["보톡스", "필러", "레이저", "카복시", "지방볼륨", "지방볼륨생성"], "status": "prohibited", "basis": "식약처 지침 [별표1] 제13조제1항제4호 '화장품의 범위를 벗어나는 광고': 지방볼륨생성·보톡스·레이저·카복시 시술 관련 표현·필러(filler) 금지. 필러는 색조제품 '채워준다/연출한다' 결합 시 예외.", "note": "색조제품 '채워준다/연출한다'는 필러에 예외. 'filler' 영어 substring 오탐 위험이라 한글 '필러'만 사용.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "absolute-superlative", "category": "소비자 오인·기만", "expression": "최고 / 최상 / 최대 / 최소 / 유일 / 1위 / 최초 (절대적·최상급 표현)", "match_keywords": ["최고", "최상", "최대", "최소", "유일", "1위", "No.1", "최초"], "status": "caution", "basis": "화장품법 시행규칙 별표5 제2호 바목 + KCIA 해설서: 배타성을 띤 '최고·최상' 등 절대적 표현은 객관적 근거 없으면 금지. '1위/최초/유일'은 공신력 있는 조사·수상 등 객관적 근거+출처·기준 명시 시 사용 가능. 식약처 '최상의 페로몬 향수' 2개월 광고정지 선례.", "note": "무근거면 부당광고, 근거 있으면 출처 병기하여 가능→사람 검토(caution). 무조건 금지로 올리면 근거 있는 '판매 1위' 등 오탐.", "source_url": "https://www.mfds.go.kr/brd/m_641/down.do?brd_id=plc0152&seq=32452&data_tp=A&file_seq=1"}, {"id": "absolute-instant", "category": "소비자 오인·기만", "expression": "즉시 주름이 사라진다 / 즉각적인 화이트닝 / 즉효 (속효성 표현)", "match_keywords": ["즉시 주름", "즉각적인 화이트닝", "즉시 미백", "즉각 미백", "즉효", "바로 사라진다"], "status": "prohibited", "basis": "KCIA 해설서(2023) p.26 속효성: 효능이 인체에 즉각 적용됨을 의미하는 표현('즉시 주름이 사라진다','즉각적인 화이트닝')은 금지. 단 실증 구비하여 '2주 경과 후 피부톤 개선'처럼 즉각성을 의미하지 않게 재구성하면 가능.", "note": "'즉시/즉각' 속효성 프레이밍만 금지. '꾸준히 사용 시 피부 톤 케어에 도움'+실증으로 대체.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "patent", "category": "소비자 오인·기만", "expression": "특허 성분 / 특허받은 (효능·기능성 우회 표방 시)", "match_keywords": ["특허 성분", "특허받은", "특허 받은", "특허성분", "세계특허", "미국특허", "특허 포뮬러"], "status": "caution", "basis": "화장품법 제13조제1항제4호 + KCIA 해설서·식약처 지침: 특허 명칭·내용은 객관적 사실(특허등록증)로 표현 가능하나, 특허가 의약품/기능성 효능(항암·아토피 치료·발모·주름개선 등)을 우회 표방하면 오인 금지. 조성물 특허자료만으로는 효능 실증 불충분.", "note": "특허 보유 사실 표현은 가능→특허+효능 인접 결합 시만 위험. 단독 '특허'는 과매칭이라 '특허 성분/특허받은/특허 포뮬러'로 매칭. 특허번호·대상 명확화 필요.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}, {"id": "ewg", "category": "소비자 오인·기만", "expression": "EWG 그린등급 / EWG 1등급 성분 사용", "match_keywords": ["EWG", "그린등급", "1등급 성분"], "status": "caution", "basis": "KCIA 해설서(2023) p.26: 공신력 없는 민간환경단체 기준(EWG 그린등급·1등급 성분)을 품질·효능의 객관적 근거로 삼는 광고는 금지. 등급 표기 자체가 아니라 효능·안전성 근거로 삼는 것이 문제(등급 수시 변경).", "note": "무독성·무자극 등 파생 표현은 별도 실증 필요→사람 검토.", "source_url": "https://kcia.or.kr/inc/down.php?dir=BOARD&file_name=202303_167929681468454_1.pdf"}]</script><!--CORPUS:END-->
+
 <script>
-/* ────────────────────────────────────────────────────────────
-   실데이터 코퍼스 — 식약처 부당광고 적발 보도/사례 (전부 출처 URL 동반)
-   precedent_or_refuse/data 와 동일. 가짜 없음.
-   ──────────────────────────────────────────────────────────── */
-const CORPUS = [
-  {id:"PRESS-F-001",agency:"식약처",year:2026,category:"일반식품(질병효능 표방)",offending_text:"감기 예방",violated_rule:"식품 등의 표시·광고에 관한 법률 (질병의 예방·치료 효능 표방)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 지자체 현장점검",source:"서울경제 2026-06-05 보도 (식약처 환절기 온라인 식품광고 165건 적발) https://www.sedaily.com/article/20052083"},
-  {id:"PRESS-F-002",agency:"식약처",year:2026,category:"일반식품(질병효능 표방)",offending_text:"아토피·건선 관리",violated_rule:"식품 등의 표시·광고에 관한 법률 (질병의 예방·치료 효능 표방)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 지자체 현장점검",source:"서울경제 2026-06-05 보도 (식약처 환절기 온라인 식품광고 165건 적발) https://www.sedaily.com/article/20052083"},
-  {id:"PRESS-F-003",agency:"식약처",year:2026,category:"일반식품(건강기능식품 오인)",offending_text:"면역력 개선",violated_rule:"식품 등의 표시·광고에 관한 법률 (일반식품을 건강기능식품으로 오인·혼동)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 지자체 현장점검",source:"서울경제 2026-06-05 보도 (식약처 환절기 온라인 식품광고 165건 적발) https://www.sedaily.com/article/20052083"},
-  {id:"PRESS-F-004",agency:"식약처",year:2026,category:"일반식품(질병효능 표방)",offending_text:"혈당 관리",violated_rule:"식품 등의 표시·광고에 관한 법률 (질병의 예방·치료 효능 표방/오인)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 지자체 현장점검",source:"서울경제 2026-06-05 보도 (식약처 환절기 온라인 식품광고 165건 적발) https://www.sedaily.com/article/20052083"},
-  {id:"PRESS-C-001",agency:"식약처",year:2026,category:"화장품(의약품 오인)",offending_text:"피부 재생",violated_rule:"화장품법 제13조 (의약품으로 오인시키는 광고)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-002",agency:"식약처",year:2026,category:"화장품(의약품 오인)",offending_text:"항염",violated_rule:"화장품법 제13조 (의약품으로 오인시키는 광고)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-003",agency:"식약처",year:2026,category:"화장품(의약품 오인)",offending_text:"근육 이완",violated_rule:"화장품법 제13조 (의약품으로 오인시키는 광고)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-004",agency:"식약처",year:2026,category:"화장품(의약품 오인)",offending_text:"관절통 완화",violated_rule:"화장품법 제13조 (의약품으로 오인시키는 광고)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-005",agency:"식약처",year:2026,category:"화장품(소비자 오인)",offending_text:"피부 내 침투",violated_rule:"화장품법 제13조 (소비자를 오인시킬 우려가 있는 표현)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-006",agency:"식약처",year:2026,category:"화장품(소비자 오인)",offending_text:"줄기세포 함유",violated_rule:"화장품법 제13조 (소비자를 오인시킬 우려가 있는 표현)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"},
-  {id:"PRESS-C-007",agency:"식약처",year:2026,category:"화장품(기능성 오인)",offending_text:"미백·주름 개선 (기능성화장품 미승인 일반화장품)",violated_rule:"화장품법 제13조 (일반화장품을 기능성화장품으로 오인)",action:"방송통신심의위원회 접속차단 요청; 반복 위반 업체 행정처분 의뢰",source:"코스인코리아 2026-02-10 보도 (식약처 설 선물용 화장품 온라인 광고 35건 적발) https://www.cosinkorea.com/news/article.html?no=56807"}
-];
+const CORPUS = JSON.parse(document.getElementById("corpus").textContent);
+const STATUS = {
+  prohibited:          { label:"금지",            cls:"s-pro" },
+  needs_substantiation:{ label:"실증·심사 필요",  cls:"s-sub" },
+  caution:             { label:"주의 — 사람 검토", cls:"s-cau" },
+};
+const SEV = { prohibited:3, needs_substantiation:2, caution:1 };
 
-/* ────────────────────────────────────────────────────────────
-   판정기 — precedent_or_refuse.retriever / verdict 미러링
-   문자 bigram 겹침계수(overlap), min_shared=2, threshold=0.30, top_k=3.
-   ──────────────────────────────────────────────────────────── */
-const THRESHOLD = 0.30, TOP_K = 3, MIN_SHARED = 2;
-
-const normalize = s => s.trim().toLowerCase().replace(/\s+/g, "");
-function bigrams(s){
-  const t = normalize(s);
-  if (t.length < 2) return new Set(t ? [t] : []);
-  const out = new Set();
-  for (let i = 0; i < t.length - 1; i++) out.add(t.slice(i, i + 2));
-  return out;
-}
-function overlap(a, b){
-  if (!a.size || !b.size) return [0, 0];
-  let inter = 0;
-  for (const x of a) if (b.has(x)) inter++;
-  if (inter === 0) return [0, 0];
-  return [inter / Math.min(a.size, b.size), inter];
-}
-function search(query){
-  const q = bigrams(query);
-  const matches = [];
-  for (const p of CORPUS){
-    const [score, shared] = overlap(q, bigrams(p.offending_text));
-    if (shared < MIN_SHARED) continue;
-    matches.push({ precedent: p, score: Math.round(score * 10000) / 10000, shared });
-  }
-  matches.sort((m1, m2) => m2.score - m1.score);
-  return matches.slice(0, TOP_K);
-}
-function assess(query){
-  const matches = search(query).filter(m => m.score >= THRESHOLD);
-  if (!matches.length){
-    return { status: "NO_PRECEDENT", matches: [],
-      message: "이 표현과 충분히 유사한 과거 처분 사례를 코퍼스에서 찾지 못했습니다. 없는 선례를 지어내지 않습니다. 자율심의/전문가 검토를 권고합니다." };
-  }
-  return { status: "MATCH", matches,
-    message: `유사 처분 선례 ${matches.length}건 — 각 건의 원문·근거조문·출처를 확인하세요.` };
-}
-
-/* ── 렌더 ── */
 const esc = s => s.replace(/[&<>"]/g, c => ({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;" }[c]));
-function splitSource(src){
-  const m = src.match(/(https?:\/\/\S+)/);
-  if (!m) return { text: src.trim(), url: null };
-  return { text: src.slice(0, m.index).trim(), url: m[1] };
+
+/* ── 매칭: 키워드의 공백을 '조사(을/를/이/가…) 허용'으로 확장해
+      한국어 실무 카피("여드름을 개선")도 잡는다. 영문 대소문자 무시. ── */
+function buildRegex(kw){
+  const escd = kw.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const pat = escd.replace(/ /g, "[을를이가은는에의로과와도]?\\s*");
+  return new RegExp(pat, "gi");
 }
-function renderVerdict(v){
-  if (v.status === "NO_PRECEDENT"){
-    return `<div class="rise"><span class="vhead refuse">● 선례 없음 — 거부</span>
-      <p class="vmsg">${esc(v.message)}</p></div>`;
+function findMatches(text){
+  const spans = [];
+  const hits = new Map();  // id → { entry, phrases:Set }
+  for (const e of CORPUS){
+    for (const kw of (e.match_keywords||[])){
+      if (!kw) continue;
+      const re = buildRegex(kw);
+      let m;
+      while ((m = re.exec(text)) !== null){
+        if (m[0].length === 0){ re.lastIndex++; continue; }
+        const start = m.index, end = start + m[0].length;
+        spans.push({ start, end, entry:e });
+        if (!hits.has(e.id)) hits.set(e.id, { entry:e, phrases:new Set() });
+        hits.get(e.id).phrases.add(m[0]);
+      }
+    }
   }
-  let html = `<div class="rise"><span class="vhead match">● 유사 선례 발견</span>
-    <p class="vmsg">${esc(v.message)}</p>`;
-  for (const m of v.matches){
-    const p = m.precedent, s = splitSource(p.source);
-    const srcHtml = s.url
-      ? `${esc(s.text)} <a href="${esc(s.url)}" target="_blank" rel="noopener">↗ 원문</a>`
-      : esc(s.text);
-    html += `<div class="pcard">
+  return { spans, hits:[...hits.values()] };
+}
+
+/* ── 하이라이트: 겹치면 높은 심각도·긴 매치 우선, 비겹침만 선택 ── */
+function renderHighlighted(text, spans){
+  const sorted = spans.slice().sort((a,b) =>
+    a.start - b.start ||
+    SEV[b.entry.status] - SEV[a.entry.status] ||
+    (b.end - b.start) - (a.end - a.start));
+  const chosen = [];
+  let lastEnd = 0;
+  for (const s of sorted){ if (s.start >= lastEnd){ chosen.push(s); lastEnd = s.end; } }
+  let html = "", cur = 0;
+  for (const s of chosen){
+    if (s.start > cur) html += esc(text.slice(cur, s.start));
+    const st = STATUS[s.entry.status];
+    html += `<mark class="hl ${st.cls}" title="${esc(st.label)} · ${esc(s.entry.category)}">${esc(text.slice(s.start, s.end))}</mark>`;
+    cur = s.end;
+  }
+  if (cur < text.length) html += esc(text.slice(cur));
+  return html;
+}
+
+function renderCards(hits){
+  const sorted = hits.slice().sort((a,b) => SEV[b.entry.status] - SEV[a.entry.status]);
+  return sorted.map(h => {
+    const e = h.entry, st = STATUS[e.status];
+    const phrases = [...h.phrases].map(p => "“" + esc(p) + "”").join(", ");
+    const src = e.source_url
+      ? ` <a href="${esc(e.source_url)}" target="_blank" rel="noopener">↗ 근거 원문</a>` : "";
+    return `<div class="pcard ${st.cls}">
       <div class="pcard__top">
-        <span class="pv-tag">${esc(p.agency)} · ${p.year}</span>
-        <span class="pv-tag">${esc(p.category)}</span>
-        <span class="score">유사도 ${m.score.toFixed(4)}</span>
+        <span class="vbadge ${st.cls}">${st.label}</span>
+        <span class="pv-tag">${esc(e.category)}</span>
       </div>
-      <p class="quote">${esc(p.offending_text)}</p>
+      <p class="quote">${esc(e.expression)}</p>
+      <p class="matched ${st.cls}">내 카피에서: ${phrases}</p>
       <dl class="meta">
-        <dt>위반 근거</dt><dd>${esc(p.violated_rule)}</dd>
-        <dt>처분 내용</dt><dd>${esc(p.action)}</dd>
-        <dt>출처</dt><dd>${srcHtml}</dd>
+        <dt>왜</dt><dd>${esc(e.note || "")}</dd>
+        <dt>근거</dt><dd>${esc(e.basis || "")}${src}</dd>
       </dl>
     </div>`;
-  }
-  return html + `</div>`;
+  }).join("");
 }
 
-/* ── 배선 ── */
 const qEl = document.getElementById("q");
-const out = document.getElementById("verdict");
+const hlEl = document.getElementById("hl");
+const vEl = document.getElementById("verdict");
+const cardsEl = document.getElementById("cards");
+
 function run(){
-  const query = qEl.value.trim();
-  if (!query){ out.innerHTML = ""; return; }
-  out.innerHTML = renderVerdict(assess(query));
+  const text = qEl.value.trim();
+  if (!text){ hlEl.innerHTML = ""; vEl.innerHTML = ""; cardsEl.innerHTML = ""; return; }
+  const { spans, hits } = findMatches(text);
+  if (!hits.length){
+    hlEl.innerHTML = esc(text);
+    vEl.innerHTML = `<div class="verdict-empty">
+      <span class="vbadge s-ok">● 알려진 위험표현 없음</span>
+      <p class="vmsg">코퍼스의 금지·실증필요·주의 표현과 일치하는 문구를 찾지 못했습니다.
+      ⚠️ 이는 <strong>‘안전하다’는 인증이 아닙니다</strong> — 이 도구는 <em>알려진 규정·선례만</em> 대조합니다.
+      최종 판단은 자율심의·전문가(RA) 검토를 권고합니다.</p></div>`;
+    cardsEl.innerHTML = "";
+    return;
+  }
+  const c = { prohibited:0, needs_substantiation:0, caution:0 };
+  for (const h of hits) c[h.entry.status]++;
+  hlEl.innerHTML = renderHighlighted(text, spans);
+  vEl.innerHTML = `<div class="summary">위험표현 <strong>${hits.length}</strong>건 —
+    금지 <strong>${c.prohibited}</strong> · 실증·심사 필요 <strong>${c.needs_substantiation}</strong> · 주의 <strong>${c.caution}</strong>
+    <span class="disclaim">· 판정이 아니라 근거 제시입니다. 최종 검토는 사람(RA).</span></div>`;
+  cardsEl.innerHTML = renderCards(hits);
 }
+
 document.getElementById("go").addEventListener("click", run);
-qEl.addEventListener("keydown", e => {
-  if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run();
-});
+qEl.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter") run(); });
 
 const EXAMPLES = [
-  "이 제품은 면역력을 높여 감기를 예방합니다",
-  "면역력을 높여주는 건강음료",
-  "피부 재생 효과가 있는 크림",
-  "줄기세포 함유 앰플로 주름 개선",
-  "혈당 관리에 도움을 주는 차",
-  "오늘 서울 날씨 어때"
+  "줄기세포 엑소좀으로 피부 재생을 촉진하고, 아토피와 여드름을 개선하는 병원전용 크림. 미백·주름개선 효과, 부작용이 전혀 없습니다.",
+  "저자극 테스트 완료, 100% 천연 유기농 성분. 피부과 의사가 추천하는 진정 크림.",
+  "수분을 가득 채워 하루종일 촉촉한 데일리 수분 크림.",
 ];
 const chips = document.getElementById("chips");
 EXAMPLES.forEach(ex => {
   const b = document.createElement("button");
-  b.className = "chip"; b.type = "button"; b.textContent = ex;
+  b.className = "chip"; b.type = "button";
+  b.textContent = ex.length > 42 ? ex.slice(0, 42) + "…" : ex;
+  b.title = ex;
   b.addEventListener("click", () => { qEl.value = ex; run(); qEl.focus(); });
   chips.appendChild(b);
 });
 
-document.getElementById("corpus-note").textContent =
-  `코퍼스 ${CORPUS.length}건 · 전부 출처 인용 · 임계값 ${THRESHOLD}`;
+document.getElementById("corpus-note").textContent = `규정·선례 ${CORPUS.length}건 · 전부 출처 인용`;
+const cn = document.getElementById("count-note"); if (cn) cn.textContent = CORPUS.length;
+
+/* ── selftest (콘솔 자기검증) — 드리프트/회귀 가드 ── */
+(function selftest(){
+  const T = [
+    { q:"피부 재생 아토피 개선", expect:{ min:2 } },
+    { q:"살균 소독 효과",        expect:{ min:1 } },
+    { q:"촉촉한 데일리 수분 크림", expect:{ zero:true } },
+  ];
+  let ok = 0;
+  for (const t of T){
+    const n = findMatches(t.q).hits.length;
+    const pass = t.expect.zero ? n === 0 : n >= (t.expect.min || 1);
+    if (pass) ok++; else console.error("selftest FAIL:", t.q, "hits=", n);
+  }
+  console.log(`selftest ${ok}/${T.length} pass · corpus ${CORPUS.length}건`);
+})();
 </script>
 </body>
 </html>
