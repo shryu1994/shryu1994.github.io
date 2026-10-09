@@ -1,286 +1,216 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Seunghyun Ryu — grounded RAG that cites or refuses</title>
-<meta name="description" content="Engineer working on grounded RAG and faithfulness/abstention eval — make AI cite a real source, or honestly refuse. Proof is public and IP-clean — deep & reliable over fast." />
-<meta property="og:title" content="Seunghyun Ryu — grounded RAG that cites or refuses" />
-<meta property="og:description" content="I make the paperwork nobody wants to touch answer itself — with AI. Deep & reliable over fast." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://sh-ryu.com/" />
-<meta name="twitter:card" content="summary" />
-<link rel="canonical" href="https://sh-ryu.com/" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&family=Hanken+Grotesk:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="provenance.css" />
-<style>
-  /* page-specific composition only — system lives in provenance.css */
-  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
-    background: color-mix(in srgb, var(--paper) 82%, transparent);
-    border-bottom: 1px solid var(--line); }
-  .nav__in { max-width: 860px; margin: 0 auto; padding: 0.85rem 1.5rem;
-    display: flex; align-items: center; justify-content: space-between; }
-  .mark { font-family: var(--font-display); font-weight: 600; font-size: 1.15rem;
-    letter-spacing: 0.02em; text-decoration: none; color: var(--ink);
-    display: inline-flex; align-items: center; gap: 0.45em; }
-  .mark__dot { width: 7px; height: 7px; border-radius: 50%; background: var(--pine); }
-  .nav__links { display: flex; gap: 1.25rem; font-family: var(--font-mono);
-    font-size: 0.75rem; letter-spacing: 0.04em; }
-  .nav__links a { color: var(--ink-muted); text-decoration: none; transition: color 0.2s; }
-  .nav__links a:hover { color: var(--pine); }
-  @media (max-width: 560px) {
-    .nav__in { flex-wrap: wrap; row-gap: 0.5rem; }
-    .nav__links { gap: 1rem; font-size: 0.7rem; }
-    .hero h1 br { display: none; }
-  }
-
-  .hero { position: relative; overflow: hidden; padding: clamp(4rem, 11vw, 8rem) 0 clamp(3rem, 6vw, 4.5rem); }
-  .hero .pv-shell { position: relative; }
-  .hero__eyebrow { margin-bottom: 1.6rem; }
-  .hero__lede { margin-top: 1.9rem; }
-  .hero__cta { margin-top: 2.4rem; display: flex; flex-wrap: wrap; gap: 0.7rem; }
-
-  section { padding: var(--space-section) 0; }
-  .sec-head { margin-bottom: 2.2rem; }
-  .sec-head .pv-h2 { margin-top: 0.9rem; }
-
-  .proof-grid { display: grid; gap: 1.1rem; grid-template-columns: 1fr 1fr; }
-  @media (max-width: 640px) { .proof-grid { grid-template-columns: 1fr; } }
-  .pv-card__head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-  .pv-card__repo { font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.04em;
-    color: var(--pine); text-decoration: none; }
-  .pv-card__repo:hover { text-decoration: underline; }
-  .pv-card__tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1.1rem; }
-
-  /* inverted "regulated" band */
-  .band { background: var(--panel); color: var(--panel-ink); border-radius: 0; }
-  .band .pv-label { color: color-mix(in srgb, var(--panel-ink) 60%, transparent); }
-  .band .pv-h2 { color: var(--panel-ink); }
-  .principles { display: grid; gap: 1.4rem; grid-template-columns: repeat(3, 1fr); margin-top: 2.4rem; }
-  @media (max-width: 720px) { .principles { grid-template-columns: 1fr; } }
-  .principle { border-top: 1px solid color-mix(in srgb, var(--panel-ink) 22%, transparent); padding-top: 1rem; }
-  .principle__n { font-family: var(--font-mono); font-size: 0.7rem; color: var(--ochre); letter-spacing: 0.1em; }
-  .principle h3 { font-family: var(--font-display); font-weight: 500; font-size: 1.2rem;
-    margin: 0.5rem 0 0.5rem; color: var(--panel-ink); }
-  .principle p { margin: 0; font-size: 0.9rem; line-height: 1.6;
-    color: color-mix(in srgb, var(--panel-ink) 72%, transparent); }
-
-  .xp { border-top: 1px solid var(--line); }
-  .xp__row { display: flex; align-items: baseline; justify-content: space-between; gap: 1.5rem;
-    padding: 1.15rem 0; border-bottom: 1px solid var(--line); }
-  .xp__role { font-size: 1.02rem; }
-  .xp__role b { font-weight: 600; }
-  .xp__role span { color: var(--ink-muted); }
-  .xp__when { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-muted); white-space: nowrap; }
-  @media (max-width: 520px) { .xp__row { flex-direction: column; gap: 0.15rem; } }
-
-  .kit { display: grid; gap: 0.55rem 2rem; grid-template-columns: 1fr 1fr;
-    font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-muted); line-height: 1.9; }
-  @media (max-width: 520px) { .kit { grid-template-columns: 1fr; } }
-  .kit b { color: var(--ink); font-weight: 500; }
-
-  footer { padding: 3rem 0 4rem; border-top: 1px solid var(--line); }
-  .foot { display: flex; flex-wrap: wrap; gap: 1.5rem; align-items: center; justify-content: space-between; }
-  .foot__links { display: flex; gap: 0.7rem; }
-  .foot__note { font-family: var(--font-mono); font-size: 0.72rem; color: var(--ink-muted); }
-
-  /* stagger */
-  .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.15s; }
-  .d3 { animation-delay: 0.25s; } .d4 { animation-delay: 0.35s; }
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Seunghyun Ryu — Site Reliability Engineer</title>
+  <meta name="description" content="Site Reliability Engineer with GCP, cloud security, incident response, FinOps and AI-assisted operations experience in regulated industries.">
+  <meta property="og:title" content="Seunghyun Ryu — Site Reliability Engineer">
+  <meta property="og:description" content="Site Reliability Engineer with GCP, cloud security, incident response, FinOps and AI-assisted operations experience in regulated industries.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://sh-ryu.com/">
+  <meta name="twitter:card" content="summary">
+  <meta name="twitter:title" content="Seunghyun Ryu — Site Reliability Engineer">
+  <meta name="twitter:description" content="Site Reliability Engineer with GCP, cloud security, incident response, FinOps and AI-assisted operations experience in regulated industries.">
+  <link rel="canonical" href="https://sh-ryu.com/">
+  <link rel="stylesheet" href="home.css">
 </head>
 <body>
-
-  <nav class="nav">
-    <div class="nav__in">
-      <a class="mark" href="/">Shryu<span class="mark__dot" aria-hidden="true"></span></a>
-      <div class="nav__links">
-        <a href="#proof">Proof</a>
-        <a href="#work">Approach</a>
-        <a href="/writing/">Writing</a>
-        <a href="https://github.com/shryu1994">GitHub ↗</a>
-      </div>
-    </div>
-  </nav>
-
-  <main>
-  <header class="hero">
-    <div class="pv-shell">
-      <div class="pv-grid" aria-hidden="true"></div>
-      <p class="pv-label hero__eyebrow pv-rise d1">Seunghyun Ryu · <span lang="ko">류승현</span></p>
-      <h1 class="pv-display pv-rise d2">
-        I make the paperwork<br />nobody wants to touch<br /><em>answer itself</em> — with AI.
-      </h1>
-      <p class="pv-lede hero__lede pv-rise d3">
-        I work on grounded RAG and faithfulness/abstention eval — getting AI to
-        cite a real source, or honestly say "i don't know," on the high-stakes,
-        slow-to-read documents that bottleneck teams.
-        Proof is public and IP-clean. Deep &amp; reliable over fast.
-      </p>
-      <div class="hero__cta pv-rise d4">
-        <a class="pv-btn pv-btn--primary" href="https://github.com/shryu1994/cite-or-refuse">View cite-or-refuse →</a>
-        <a class="pv-btn" href="https://linkedin.com/in/shryu1994">LinkedIn</a>
-        <a class="pv-btn" href="https://x.com/shryu1994">X</a>
-      </div>
-    </div>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header>
+    <nav class="shell nav" aria-label="Primary">
+      <a data-copy="A02.nav-work" href="#proof">Selected work</a>
+      <a data-copy="A02.nav-approach" href="#work">How I work</a>
+      <a data-copy="A02.nav-experience" href="#experience">Experience</a>
+      <a data-copy="A02.nav-writing" href="/writing/">Writing</a>
+      <a data-copy="A02.nav-github" href="https://github.com/shryu1994">GitHub</a>
+    </nav>
   </header>
-
-  <section id="proof">
-    <div class="pv-shell">
-      <div class="sec-head">
-        <p class="pv-label">Public proof</p>
-        <h2 class="pv-h2">Shipped in the open, and adversarially reviewed.</h2>
-      </div>
-      <div class="proof-grid">
-
-        <article class="pv-card">
-          <div class="pv-card__head">
-            <span class="pv-cite">cite · abstain</span>
-            <a class="pv-card__repo" href="https://github.com/shryu1994/provenance-bench">github ↗</a>
-          </div>
-          <h3 class="pv-card__title">ProvenanceBench</h3>
-          <p>
-            A faithfulness + justified-abstention benchmark for regulated docs: a correct refusal
-            is a first-class pass, scored only for the right reason. I ran three systems, including
-            a real LLM — and showed the default RAG metric returns NaN for a correct refusal.
-            Offline; every gold label adversarially verified against the corpus.
-          </p>
-          <div class="pv-card__tags">
-            <span class="pv-tag">benchmark</span>
-            <span class="pv-tag">justified abstention</span>
-            <span class="pv-tag">regulated RAG</span>
-          </div>
-        </article>
-
-        <article class="pv-card">
-          <div class="pv-card__head">
-            <span class="pv-cite">cite · refuse</span>
-            <a class="pv-card__repo" href="https://github.com/shryu1994/cite-or-refuse">github ↗</a>
-          </div>
-          <h3 class="pv-card__title">cite-or-refuse</h3>
-          <p>
-            A documentation Q&amp;A system with one rule: cite a real source, or honestly
-            refuse — and refusal scores as a first-class eval. Before publishing, an
-            adversarial review caught it confidently answering questions it had no source
-            for; I found the root cause and fixed it. 11/11 eval cases pass, 20 offline tests, no API key.
-          </p>
-          <div class="pv-card__tags">
-            <span class="pv-tag">grounded RAG</span>
-            <span class="pv-tag">refusal-as-eval</span>
-            <span class="pv-tag">LLM-as-Judge</span>
-          </div>
-        </article>
-
-        <article class="pv-card">
-          <div class="pv-card__head">
-            <span class="pv-cite">local · 0 deps</span>
-            <span style="display:inline-flex;gap:.9rem;">
-              <a class="pv-card__repo" href="https://sh-ryu.com/promptprint/">live demo ↗</a>
-              <a class="pv-card__repo" href="https://github.com/shryu1994/promptprint">github ↗</a>
-            </span>
-          </div>
-          <h3 class="pv-card__title">promptprint</h3>
-          <p>
-            A Claude Code / Codex companion that measures the one thing nothing else does:
-            how <em>you</em> ask — and how that's changing. A recurring, local check that ends
-            with what to fix next — skills to build from the work you keep re-explaining — not a
-            one-time vanity card. "Nothing leaves your machine" is verifiable in the code.
-          </p>
-          <div class="pv-card__tags">
-            <span class="pv-tag">developer tool</span>
-            <span class="pv-tag">local-first</span>
-            <span class="pv-tag">Claude Code</span>
-          </div>
-        </article>
-
+  <main id="main" tabindex="-1">
+    <div class="hero shell">
+      <p data-copy="A03.eyebrow" class="label">Seunghyun Ryu · <span lang="ko">류승현</span></p>
+      <h1 data-copy="A03.h1-primary">Site Reliability Engineer for regulated industries</h1>
+      <p data-copy="A03.lede" class="lede">AI-assisted operations for cloud reliability and cloud security on GCP, from incident response to FinOps. My experience spans regulated industries: public sector, finance and medical devices. I use evidence to guide changes.</p>
+      <div class="actions">
+        <a data-copy="A03.cta-linkedin" href="https://linkedin.com/in/shryu1994" class="primary">View LinkedIn profile</a>
+        <a data-copy="A03.cta-github" href="https://github.com/shryu1994">Explore GitHub projects</a>
       </div>
     </div>
-  </section>
-
-  <section class="band" id="work">
-    <div class="pv-shell">
-      <div class="sec-head">
-        <p class="pv-label">How I work</p>
-        <h2 class="pv-h2">Refusing to guess is a feature, not a gap.</h2>
+    <section id="proof">
+      <div class="shell section-inner">
+        <div class="section-head">
+          <p data-copy="A04.label" class="label">Selected work</p>
+          <h2 data-copy="A04.heading">Operations patterns from regulated industries</h2>
+        </div>
+        <div class="section-body">
+          <div class="patterns">
+            <article class="card">
+              <h3 data-copy="A04.incident-title">Incident root-cause analysis</h3>
+              <p data-copy="A04.incident-body">I restored service reliability when production behavior diverged from healthy-looking checks. I traced logs, deployment state and request paths, verified the fix, and documented where my first diagnosis was wrong.</p>
+              <p data-copy="A04.incident-tags" class="tags">Incident response · Observability</p>
+            </article>
+            <article class="card">
+              <h3 data-copy="A04.security-title">Cloud security governance</h3>
+              <p data-copy="A04.security-body">I brought cloud security controls into one reviewable pipeline in a regulated environment. I connected asset inventory, logging, risk triage and evidence reporting to give ongoing security work a clear trail.</p>
+              <p data-copy="A04.security-tags" class="tags">Cloud security · GCP · Governance</p>
+            </article>
+            <article class="card">
+              <h3 data-copy="A04.migration-title">Cloud migrations</h3>
+              <p data-copy="A04.migration-body">I brought services from separate hosting environments into GCP. I planned DNS and traffic changes, checked service behavior and prepared rollback paths, bringing infrastructure under a shared operating model.</p>
+              <p data-copy="A04.migration-tags" class="tags">Migrations · GCP · Rollback</p>
+            </article>
+            <article class="card">
+              <h3 data-copy="A04.finops-title">Cloud cost management (FinOps)</h3>
+              <p data-copy="A04.finops-body">I reduced cloud waste without treating every billing drop as a saving. I compared billing with sustained usage, adjusted resource sizes and automated reports that separated real savings from currency effects and billing gaps.</p>
+              <p data-copy="A04.finops-tags" class="tags">FinOps · Billing · Capacity planning</p>
+            </article>
+            <article class="card">
+              <h3 data-copy="A04.ai-title">AI ChatOps and model observability</h3>
+              <p data-copy="A04.ai-body">I made cloud queries easier through AI ChatOps: conversational operations tools. I added read-only query boundaries and measured large language model (LLM) latency, failures and token use to guide changes rather than guess.</p>
+              <p data-copy="A04.ai-tags" class="tags">AI-assisted operations · ChatOps · LLM evaluation</p>
+            </article>
+          </div>
+        </div>
       </div>
-      <div class="principles">
-        <div class="principle">
-          <span class="principle__n">01</span>
-          <h3>Evidence first</h3>
-          <p>Claims are made only from retrieved, cited sources — never from the words a
-             question happens to share. Absence of evidence is reported, not papered over.</p>
+    </section>
+    <section id="work" class="band">
+      <div class="shell section-inner">
+        <div class="section-head">
+          <p data-copy="A05.label" class="label">How I work</p>
+          <h2 data-copy="A05.heading">Evidence, approval and clear boundaries</h2>
         </div>
-        <div class="principle">
-          <span class="principle__n">02</span>
-          <h3>Human approval gate</h3>
-          <p>Anything irreversible — sending, modifying infra, exposing data — waits for a
-             person to review and approve. The system drafts; the human decides.</p>
-        </div>
-        <div class="principle">
-          <span class="principle__n">03</span>
-          <h3>Clear data boundaries</h3>
-          <p>Proof lives on public, synthetic data. Company systems and customer data stay
-             private. The method is the point — so the evidence stays reproducible.</p>
+        <div class="section-body">
+          <div class="principles">
+            <article>
+              <h3 data-copy="A05.evidence-title">Evidence before conclusions</h3>
+              <p data-copy="A05.evidence-body">I compare logs, deployment state and observed behavior before calling a problem resolved. If the evidence changes, I revise the diagnosis.</p>
+            </article>
+            <article>
+              <h3 data-copy="A05.approval-title">People approve lasting changes</h3>
+              <p data-copy="A05.approval-body">I keep human approval in the path for irreversible changes. Automation can prepare a change; a person decides whether to apply it.</p>
+            </article>
+            <article>
+              <h3 data-copy="A05.boundaries-title">Clear data boundaries</h3>
+              <p data-copy="A05.boundaries-body">I explain methods without exposing private systems or data. Public examples use public or synthetic material, with their limits stated.</p>
+            </article>
+          </div>
         </div>
       </div>
+    </section>
+    <section id="experience">
+      <div class="shell section-inner">
+        <div class="section-head">
+          <p data-copy="A06.label" class="label">Experience</p>
+          <h2 data-copy="A06.heading">Cloud operations across regulated sectors</h2>
+        </div>
+        <div class="section-body">
+          <p data-copy="A06.abbreviation-note" class="muted">SRE means Site Reliability Engineering.</p>
+          <article class="xp">
+            <p data-copy="A06.row-1-dates" class="date">Jul 2025 – present</p>
+            <div>
+              <h3 data-copy="A06.row-1-title">Cloud Engineer (SRE · Cloud Security)</h3>
+              <p data-copy="A06.row-1-sector">Medical-device company</p>
+            </div>
+          </article>
+          <article class="xp">
+            <p data-copy="A06.row-2-dates" class="date">Apr 2023 – Jun 2025</p>
+            <div>
+              <h3 data-copy="A06.row-2-title">Site Reliability Engineer</h3>
+              <p data-copy="A06.row-2-sector">Cloud managed-service provider (banking and public-sector clients)</p>
+            </div>
+          </article>
+          <article class="xp">
+            <p data-copy="A06.row-3-dates" class="date">May 2022 – Apr 2023</p>
+            <div>
+              <h3 data-copy="A06.row-3-title">Site Reliability Engineer</h3>
+              <p data-copy="A06.row-3-sector">Cloud managed-service provider (predecessor in the same group)</p>
+            </div>
+          </article>
+          <article class="xp">
+            <p data-copy="A06.row-4-dates" class="date">Jan 2022 – May 2022</p>
+            <div>
+              <h3 data-copy="A06.row-4-title">Site Reliability Engineer</h3>
+              <p data-copy="A06.row-4-sector">Cloud managed-service provider (public-sector clients)</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+    <div class="shell credentials">
+      <section>
+        <div class="section-inner">
+          <div class="section-head">
+            <h2 data-copy="A07.label" class="label">Certifications</h2>
+          </div>
+          <div class="section-body">
+            <p data-copy="A07.line">Earned CKA (2022) and CKAD (2023).</p>
+          </div>
+        </div>
+      </section>
+      <section>
+        <div class="section-inner">
+          <div class="section-head">
+            <h2 data-copy="A08.label" class="label">Toolbox</h2>
+          </div>
+          <div class="section-body">
+            <p data-copy="A08.line-1">Google Cloud Platform (GCP) · Kubernetes · Cloud security</p>
+            <p data-copy="A08.line-2">Terraform · Infrastructure as Code (IaC) · GitOps · Argo CD · CI/CD</p>
+            <p data-copy="A08.line-3">Linux · Docker · Python</p>
+          </div>
+        </div>
+      </section>
     </div>
-  </section>
-
-  <section id="experience">
-    <div class="pv-shell">
-      <div class="sec-head">
-        <p class="pv-label">Experience</p>
-        <h2 class="pv-h2">Four years close to production.</h2>
-      </div>
-      <div class="xp">
-        <div class="xp__row">
-          <span class="xp__role"><b>Cloud Engineer</b></span>
-          <span class="xp__when">2025 — present</span>
+    <aside class="shell studio">
+      <h2 data-copy="A09.heading">SH Ryu Studio</h2>
+      <p data-copy="A09.body">My independent software studio is building two consumer products, both in development.</p>
+      <a data-copy="A09.link" href="https://studio.sh-ryu.com/">Visit SH Ryu Studio</a>
+    </aside>
+    <section id="earlier" class="earlier">
+      <div class="shell section-inner">
+        <div class="section-head">
+          <h2 data-copy="A10.label" class="label">Earlier experiments</h2>
         </div>
-        <div class="xp__row">
-          <span class="xp__role"><b>Site Reliability Engineer</b></span>
-          <span class="xp__when">2023 — 2025</span>
-        </div>
-        <div class="xp__row">
-          <span class="xp__role"><b>Site Reliability Engineer</b></span>
-          <span class="xp__when">2022 — 2023</span>
-        </div>
-        <div class="xp__row">
-          <span class="xp__role"><b>Site Reliability Engineer</b></span>
-          <span class="xp__when">2022</span>
+        <div class="section-body">
+          <p data-copy="A10.intro">Small public projects exploring source-backed answers, evaluation and local prompt analysis.</p>
+          <div class="experiments">
+            <article>
+              <h3 data-copy="A10.cite-name">cite-or-refuse</h3>
+              <p data-copy="A10.cite-body">A documentation question-answering experiment that cites a source or declines to answer.</p>
+              <div class="links">
+                <a data-copy="A10.cite-link-1" href="https://github.com/shryu1994/cite-or-refuse">Read cite-or-refuse code</a>
+                <a data-copy="A10.cite-link-2" href="/writing/cite-or-refuse/">Read the cite-or-refuse write-up</a>
+              </div>
+            </article>
+            <article>
+              <h3 data-copy="A10.bench-name">ProvenanceBench</h3>
+              <p data-copy="A10.bench-body">A benchmark exploring faithful answers and when declining to answer is the right result.</p>
+              <div class="links">
+                <a data-copy="A10.bench-link-1" href="https://github.com/shryu1994/provenance-bench">Read ProvenanceBench code</a>
+                <a data-copy="A10.bench-link-2" href="/writing/provenancebench/">Read the ProvenanceBench write-up</a>
+              </div>
+            </article>
+            <article>
+              <h3 data-copy="A10.prompt-name">promptprint</h3>
+              <p data-copy="A10.prompt-body">A local tool for reviewing how you prompt AI coding agents and what to improve next.</p>
+              <div class="links">
+                <a data-copy="A10.prompt-link-1" href="https://sh-ryu.com/promptprint/">Try the promptprint demo</a>
+                <a data-copy="A10.prompt-link-2" href="https://github.com/shryu1994/promptprint">Read promptprint code</a>
+                <a data-copy="A10.prompt-link-3" href="/writing/promptprint/">Read the promptprint write-up</a>
+              </div>
+            </article>
+          </div>
+          <a data-copy="A10.writing-link" class="writing-link" href="/writing/">Browse all writing</a>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="toolbox" style="padding-top: 0;">
-    <div class="pv-shell">
-      <div class="sec-head">
-        <p class="pv-label">Toolbox</p>
-        <h2 class="pv-h2">What I reach for.</h2>
-      </div>
-      <div class="kit">
-        <div><b>AI</b> &nbsp; grounded RAG · evals &amp; LLM-as-Judge · MCP / agents</div>
-        <div><b>Platform</b> &nbsp; Kubernetes · GCP · CI/CD · reliability</div>
-        <div><b>Build</b> &nbsp; Python · TypeScript · infra-as-code</div>
-      </div>
-    </div>
-  </section>
-
+    </section>
   </main>
-
-  <footer>
-    <div class="pv-shell foot">
-      <div class="foot__links">
-        <a class="pv-btn" href="https://github.com/shryu1994">GitHub</a>
-        <a class="pv-btn" href="https://x.com/shryu1994">X</a>
-        <a class="pv-btn" href="https://linkedin.com/in/shryu1994">LinkedIn</a>
-      </div>
-      <p class="foot__note">© Seunghyun Ryu — cite a real source, or refuse.</p>
+  <footer class="shell">
+    <p data-copy="A11.note">© Seunghyun Ryu · Site Reliability Engineering</p>
+    <div class="links">
+      <a data-copy="A11.link-github" href="https://github.com/shryu1994">GitHub</a>
+      <a data-copy="A11.link-linkedin" href="https://linkedin.com/in/shryu1994">LinkedIn</a>
+      <a data-copy="A11.link-x" href="https://x.com/shryu1994">X profile</a>
     </div>
   </footer>
-
 </body>
 </html>

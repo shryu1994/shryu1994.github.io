@@ -1,9 +1,7 @@
-# shryu1994.github.io
+# Seunghyun Ryu — personal site
 
-Personal site of **Seunghyun Ryu (류승현)** — grounded RAG that cites or refuses.
+The personal site of Seunghyun Ryu, a Site Reliability Engineer working on cloud reliability, security and AI-assisted operations in regulated industries.
 
-Built on **Provenance**, a small in-house design system (`provenance.css`):
-warm bond paper, ink, a pine signature, and a citation-mark motif —
-because every claim should look sourced.
+This is a static site served by GitHub Pages at https://sh-ryu.com/. The home page uses its own stylesheet, `home.css`. The earlier Provenance design system, `provenance.css`, stays unchanged for older pages such as `/writing/`.
 
-→ Live: https://shryu1994.github.io · cite-or-refuse: https://github.com/shryu1994/cite-or-refuse
+The home page brings together operations patterns, experience, SH Ryu Studio and earlier public experiments. Older pages, including `/writing/`, remain at their existing URLs.
